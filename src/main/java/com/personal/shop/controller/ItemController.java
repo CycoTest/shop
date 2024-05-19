@@ -11,6 +11,6 @@ public class ItemController {
     String showList(Model model) {
         model.addAttribute("name", "비싼 바지");
 
-        return "index.html";
+        return "list.html";
     }
 }
