@@ -5,18 +5,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="/css/main.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <img src="#" alt="image">
-        <h4 th:text="${name}">바지</h4>
-        <p>7억</p>
-    </div>
-    <div>
-        <img src="#" alt="image">
-        <h4>바지</h4>
-        <p>7억</p>
+    <div class="card" th:each="i : ${items}">
+        <img src="https://placehold.co/300" alt="image">
+        <div>
+            <h4 th:text="${i.title}"></h4>
+            <p th:text="${i.price}"></p>
+        </div>
     </div>
 </body>
 </html>
