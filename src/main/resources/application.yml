@@ -1,1 +1,22 @@
-spring.application.name=shop
+spring:
+  application:
+    name: shop
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://shoppingmall.mysql.database.azure.com/shop
+    username: cycoTest
+    password: 9125Tkdehchemd!
+
+
+  jpa:
+    # JPA 문법쓸 때, SQL 따로 출력 여부
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+    # 테이블 생성 자동 여부
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
