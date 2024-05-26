@@ -1,7 +1,6 @@
 package com.personal.shop.controller;
 
 import com.personal.shop.entity.Item;
-import com.personal.shop.repository.ItemRepository;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
 
-    private final ItemRepository itemRepository;
     private final ItemService itemService;
 
     @GetMapping("/list")
@@ -62,6 +60,34 @@ public class ItemController {
 
         // 에러 코드
         // 유저 잘못 = 4XX, 서버 잘못 = 5XX, 정상 작동 = 200
+    }
+
+    @GetMapping("/itemInfo/{id}")
+    String showEditItemForm(@PathVariable Long id, Model model) {
+
+        Optional<Item> result = itemService.editItem(id);
+        if (result.isPresent()) {
+            model.addAttribute("itemData", result.get());
+
+            return "edit.html";
+        } else {
+
+            return "redirect:/list";
+        }
+    }
+
+    @PostMapping("/itemInfo/edit/{id}")
+    String updateItem(@PathVariable Long id, String title, Integer price) {
+
+        Optional<Item> result = itemService.bringItemById(id);
+        if (result.isPresent()) {
+            itemService.saveItemById(id, title, price);
+
+            return "redirect:/list";
+        } else {
+
+            return "error.html";
+        }
     }
 
 
