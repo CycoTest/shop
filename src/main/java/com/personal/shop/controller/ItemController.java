@@ -23,7 +23,8 @@ public class ItemController {
     @GetMapping("/list")
     String showList(Model model) {
 
-        model.addAttribute("items", itemService.bringItemList());
+        List<Item> result = itemService.bringItemList();
+        model.addAttribute("items", result);
 
         return "list.html";
     }
@@ -62,5 +63,6 @@ public class ItemController {
         // 에러 코드
         // 유저 잘못 = 4XX, 서버 잘못 = 5XX, 정상 작동 = 200
     }
-    
+
+
 }
