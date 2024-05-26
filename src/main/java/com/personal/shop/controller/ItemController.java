@@ -90,5 +90,20 @@ public class ItemController {
         }
     }
 
+    @PostMapping("/test1")
+    String test1(@RequestBody Map<String, Object> body) {
+        System.out.println("요청 들어옴");
+        System.out.println("body 값은 " + body);
+        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
 
+        return "redirect:/list";
+    }
+
+    @DeleteMapping("/itemInfo/delete")
+    ResponseEntity<String> doRemoveItem(@RequestParam Long id) {
+
+        itemService.eraseItem(id);
+
+        return ResponseEntity.status(200).body("삭제 완료");
+    }
 }

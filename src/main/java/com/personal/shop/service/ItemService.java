@@ -53,5 +53,8 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
+    public void eraseItem(Long id) {
 
+        itemRepository.deleteById(id);
+    }
 }
