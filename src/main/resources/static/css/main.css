@@ -46,3 +46,14 @@ button {
 input {
     display: block;
 }
+
+/* detail page */
+.detail {
+    text-align: center;
+}
+
+.detail img {
+    max-width: 30%;
+    display: block;
+    margin: auto;
+}
