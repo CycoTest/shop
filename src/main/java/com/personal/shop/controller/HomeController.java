@@ -10,7 +10,7 @@ public class HomeController {
     @GetMapping("/")
     String goHome() {
 
-        return "index.html";
+        return "index";
     }
 
     @GetMapping("/about")

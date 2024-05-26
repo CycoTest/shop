@@ -24,13 +24,13 @@ public class ItemController {
         List<Item> result = itemService.bringItemList();
         model.addAttribute("items", result);
 
-        return "list.html";
+        return "base/list";
     }
 
     @GetMapping("/itemInfo/write")
     String showItemWriteForm() {
 
-        return "write.html";
+        return "detail/write";
     }
 
     @PostMapping("/itemInfo/write")
@@ -52,7 +52,7 @@ public class ItemController {
             model.addAttribute("itemDetail", result.get());
 //            System.out.println(result.get());
 
-            return "detail.html";
+            return "detail/detail";
         } else {
 
             return "redirect:/list";
@@ -69,7 +69,7 @@ public class ItemController {
         if (result.isPresent()) {
             model.addAttribute("itemData", result.get());
 
-            return "edit.html";
+            return "detail/edit";
         } else {
 
             return "redirect:/list";
@@ -86,7 +86,7 @@ public class ItemController {
             return "redirect:/list";
         } else {
 
-            return "error.html";
+            return "error/error";
         }
     }
 

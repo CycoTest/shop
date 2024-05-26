@@ -22,6 +22,6 @@ public class NoticeController {
 
         model.addAttribute("notices", result);
 
-        return "notice.html";
+        return "base/notice";
     }
 }
