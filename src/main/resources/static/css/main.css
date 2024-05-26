@@ -3,11 +3,45 @@
 .card {
     margin: 30px auto;
     display: flex;
+    padding: 0 100px;
 }
 
 .card img {
-    width: 150px;
+    width: 100px;
     margin-right: 20px;
+}
+
+.card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card th, .card td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.card th {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.card td img, .card td a {
+    margin: 0;
+}
+
+.card td:nth-child(2) {
+    text-align: center;
+}
+
+.card td:nth-child(3) {
+    text-align: right;
+}
+
+.card td a {
+    margin-right: 10px;
 }
 
 /* Navigation Bar */
