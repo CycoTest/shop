@@ -37,19 +37,19 @@
                         </a>
                     </div>
                     <span>or use your username, display name, password for Registration</span>
-                    <label for="su_username"></label>
-                    <input type="text" id="su_username" name="su_username" placeholder="username">
-                    <label for="su_displayName"></label>
-                    <input type="text" id="su_displayName" name="su_displayName" placeholder="display name">
-                    <label for="su_password"></label>
-                    <input type="password" id="su_password" name="su_password" placeholder="password">
+                    <label for="sign_username"></label>
+                    <input type="text" id="sign_username" name="sign_username" placeholder="username">
+                    <label for="sign_displayName"></label>
+                    <input type="text" id="sign_displayName" name="sign_displayName" placeholder="display name">
+                    <label for="sign_password"></label>
+                    <input type="password" id="sign_password" name="sign_password" placeholder="password">
 
                     <button type="submit">Sign Up</button>
                 </form>
             </div>
 
             <div class="form-container sign-in">
-                <form action="/member/" method="post">
+                <form action="/member/login" method="post">
                     <h1>Log-In</h1>
                     <div class="social-icons">
                         <a href="#" class="icon">
@@ -66,10 +66,14 @@
                         </a>
                     </div>
                     <span>or use your username, password for Log In</span>
-                    <label for="lg-username"></label>
-                    <input type="text" id="lg-username" placeholder="username">
-                    <label for="lg-password"></label>
-                    <input type="password" id="lg-password" placeholder="password">
+
+                    <div th:if="${param.error}">
+                        <h4>your username or password is wrong</h4>
+                    </div>
+                    <label for="log_username"></label>
+                    <input type="text" id="log_username" name="log_username" placeholder="username">
+                    <label for="log_password"></label>
+                    <input type="password" id="log_password" name="log_password" placeholder="password">
 
                     <a href="#">Forget Your Password?</a>
                     <button type="submit">Log In</button>

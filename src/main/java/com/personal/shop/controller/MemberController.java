@@ -2,6 +2,7 @@ package com.personal.shop.controller;
 
 import com.personal.shop.entity.Member;
 import com.personal.shop.service.MemberService;
+import com.personal.shop.service.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MyUserDetailsService myUserDetailsService;
 
     @GetMapping("/member")
     String showLoginForm() {
@@ -21,22 +23,20 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    String enterMember(String username, String password)  {
-        Member member = new Member();
-        if (member.getUserName().equals(username)) {
-            if (member.getPassword().equals(password)) {
+    String enterMember(@RequestParam("log_username") String username,
+                       @RequestParam("log_password") String password)  {
 
-                return "redirect:/list";
-            }
-        }
+        System.out.println(username);
+        System.out.println(password);
+        myUserDetailsService.loadUserByUsername(username);
 
         return "redirect:/member";
     }
 
     @PostMapping("/member/register")
-    String beMember(@RequestParam("su_username") String username,
-                    @RequestParam("su_password") String password,
-                    @RequestParam("su_displayName") String displayName)
+    String beMember(@RequestParam("sign_username") String username,
+                    @RequestParam("sign_password") String password,
+                    @RequestParam("sign_displayName") String displayName)
             throws Exception {
 
         memberService.saveMember(username, password, displayName);
