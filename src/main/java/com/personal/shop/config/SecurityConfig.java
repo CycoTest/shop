@@ -18,17 +18,32 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        // CSRF 기능 끄기
         httpSecurity.csrf( (csrf) -> csrf.disable());
+
+
         httpSecurity.authorizeHttpRequests( (authorize)
-                -> authorize.requestMatchers("/**").permitAll()
+                -> authorize
+                    .requestMatchers("/myPage", "/itemInfo/**").authenticated()
+                    .requestMatchers("/**").permitAll()
         );
 
         httpSecurity.formLogin((formLogin)
-                -> formLogin.loginPage("/member")
-                .defaultSuccessUrl("/member/login")
-//                .failureUrl("/fail")
+                -> formLogin
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/myPage", true)
+                    .failureUrl("/member")
+        );
+
+        httpSecurity.logout((logout)
+                -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/list") // redirect to Item List page
+                    .permitAll()
         );
 
         return httpSecurity.build();

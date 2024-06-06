@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -20,7 +23,7 @@
         <div class="container" id="container">
 
             <div class="form-container sign-up">
-                <form action="/member/register" method="post">
+                <form action="/register" method="post">
                     <h1>Create Account</h1>
                     <div class="social-icons">
                         <a href="#" class="icon">
@@ -49,7 +52,7 @@
             </div>
 
             <div class="form-container sign-in">
-                <form action="/member/login" method="post">
+                <form th:action="@{/login}" method="post">
                     <h1>Log-In</h1>
                     <div class="social-icons">
                         <a href="#" class="icon">
@@ -68,12 +71,15 @@
                     <span>or use your username, password for Log In</span>
 
                     <div th:if="${param.error}">
-                        <h4>your username or password is wrong</h4>
+                        <h4>Invalid username or password</h4>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <h4>You have been logged out</h4>
                     </div>
                     <label for="log_username"></label>
-                    <input type="text" id="log_username" name="log_username" placeholder="username">
+                    <input type="text" id="log_username" name="username" placeholder="username">
                     <label for="log_password"></label>
-                    <input type="password" id="log_password" name="log_password" placeholder="password">
+                    <input type="password" id="log_password" name="password" placeholder="password">
 
                     <a href="#">Forget Your Password?</a>
                     <button type="submit">Log In</button>
