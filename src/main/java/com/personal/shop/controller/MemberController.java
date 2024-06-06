@@ -43,4 +43,13 @@ public class MemberController {
         return "redirect:/member";
     }
 
+    @GetMapping("/myPage")
+    String goMyPage(Authentication auth) {
+        CustomUser result = (CustomUser) auth.getPrincipal();
+        System.out.println(result.getDisplayName());
+
+        return "members/myPage";
+    }
+
+
 }
