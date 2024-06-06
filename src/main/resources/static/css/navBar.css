@@ -17,6 +17,26 @@
     font-weight: 800;
 }
 
+.nav .loginStatus {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.nav .loginStatus span {
+    margin-right: 10px;
+}
+
+.nav .logoutBtn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 input, button {
     padding: 8px 13px;
     margin-top: 5px;

@@ -4,6 +4,8 @@ import com.personal.shop.entity.Item;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,11 @@ public class ItemController {
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
         // 비지니스 로직은 service 로 뺌
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
+
         itemService.saveItem(title, price);
 
         return "redirect:/list";
@@ -90,14 +97,14 @@ public class ItemController {
         }
     }
 
-    @PostMapping("/test1")
-    String test1(@RequestBody Map<String, Object> body) {
-        System.out.println("요청 들어옴");
-        System.out.println("body 값은 " + body);
-        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
-
-        return "redirect:/list";
-    }
+//    @PostMapping("/test1")
+//    String test1(@RequestBody Map<String, Object> body) {
+//        System.out.println("요청 들어옴");
+//        System.out.println("body 값은 " + body);
+//        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
+//
+//        return "redirect:/list";
+//    }
 
     @DeleteMapping("/itemInfo/delete")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id) {

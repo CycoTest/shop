@@ -1,5 +1,6 @@
 package com.personal.shop.service;
 
+import com.personal.shop.entity.CustomUser;
 import com.personal.shop.entity.Member;
 import com.personal.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,15 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("존재하지 않는 아이디입니다.");
         }
 
-        var user = result.get();
+        Member user = result.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("일반유저"));
-        System.out.println("로그인 성공");
 
-        return new User(user.getUserName(), user.getPassword(), authorities);
+        // displayName 데이터를 추가하기 위해, userdetails의 User 클래스를 상속받은 CustomUser 클래스를 만들어줌
+        // 그런 다음 displayName 변수를 추가하여, 로그인한 유저의 정보를 불러와 저장함
+        CustomUser customUser = new CustomUser(user.getUserName(), user.getPassword(), authorities);
+        customUser.setDisplayName(user.getDisplayName());
+
+        return customUser;
     }
 }

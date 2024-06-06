@@ -13,11 +13,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void saveMember(String username, String displayName, String password)
+    public void saveMember(String username, String password, String displayName)
             throws Exception {
 
         if (username.length() < 8 || password.length() < 8) {
-            throw new Exception("너무 짧음");
+            throw new Exception("아이디 혹은 비밀번호가 너무 짧음");
         }
 
         Member member = new Member();
