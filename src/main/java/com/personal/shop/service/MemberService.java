@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -25,6 +28,15 @@ public class MemberService {
         member.setDisplayName(displayName);
         String pwHash = passwordEncoder.encode(password);
         member.setPassword(pwHash);
+
+        // Check displayName and assign roles accordingly
+        List<String> roles = new ArrayList<>();
+        if ("admin".equalsIgnoreCase(displayName)) {
+            roles.add("ROLE_ADMIN");
+        } else {
+            roles.add("ROLE_USER");
+        }
+        member.setRoles(roles);
 
         memberRepository.save(member);
     }

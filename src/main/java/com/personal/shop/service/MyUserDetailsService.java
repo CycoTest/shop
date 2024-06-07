@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +34,9 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         Member user = result.get();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("일반유저"));
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
         // displayName 데이터를 추가하기 위해, userdetails의 User 클래스를 상속받은 CustomUser 클래스를 만들어줌
         // 그런 다음 displayName 변수를 추가하여, 로그인한 유저의 정보를 불러와 저장함

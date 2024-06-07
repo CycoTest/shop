@@ -1,9 +1,10 @@
 package com.personal.shop.controller;
 
+import com.personal.shop.dto.MemberDTO;
 import com.personal.shop.entity.CustomUser;
+import com.personal.shop.entity.Member;
 import com.personal.shop.repository.MemberRepository;
 import com.personal.shop.service.MemberService;
-import com.personal.shop.service.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
+import java.util.Optional;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +23,6 @@ public class MemberController {
 
     private final MemberRepository memberRepository;
     private final MemberService memberService;
-    private final MyUserDetailsService myUserDetailsService;
 
     @GetMapping("/member")
     String showLoginForm() {
@@ -49,6 +51,19 @@ public class MemberController {
         System.out.println(result.getDisplayName());
 
         return "members/myPage";
+    }
+
+    @GetMapping("/user/1")
+    @ResponseBody
+    public MemberDTO getUser() {
+        Optional<Member> a = memberRepository.findById(1L);
+        if (a.isPresent()) {
+            var result = a.get();
+
+            return new MemberDTO(result.getUserName(), result.getDisplayName());
+        }
+
+        return null;
     }
 
 
