@@ -27,3 +27,15 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  # DB에 세션 데이터 저장
+  session:
+    jdbc:
+      initialize-schema: always
+
+server:
+  servlet:
+    session:
+      timeout: 5m
+      cookie:
+        max-age: 5m
