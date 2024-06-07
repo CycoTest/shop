@@ -4,6 +4,8 @@ import com.personal.shop.entity.Item;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,17 +31,28 @@ public class ItemController {
 
     @GetMapping("/itemInfo/write")
     String showItemWriteForm() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         return "detail/write";
     }
 
     @PostMapping("/itemInfo/write")
-    String addItem(String title, Integer price) {
+    String addItem(@RequestParam("title") String title,
+                   @RequestParam("price") Integer price,
+                   @RequestParam("uploader") String registerUser) {
         // 파라미터에 @ModelAttribute Item item 으로 해도 됨
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
         // 비지니스 로직은 service 로 뺌
-        itemService.saveItem(title, price);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
+
+        itemService.saveItem(title, price, registerUser);
 
         return "redirect:/list";
     }
@@ -64,6 +77,10 @@ public class ItemController {
 
     @GetMapping("/itemInfo/{id}")
     String showEditItemForm(@PathVariable Long id, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         Optional<Item> result = itemService.editItem(id);
         if (result.isPresent()) {
@@ -78,6 +95,10 @@ public class ItemController {
 
     @PostMapping("/itemInfo/edit/{id}")
     String updateItem(@PathVariable Long id, String title, Integer price) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         Optional<Item> result = itemService.bringItemById(id);
         if (result.isPresent()) {
@@ -90,17 +111,21 @@ public class ItemController {
         }
     }
 
-    @PostMapping("/test1")
-    String test1(@RequestBody Map<String, Object> body) {
-        System.out.println("요청 들어옴");
-        System.out.println("body 값은 " + body);
-        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
-
-        return "redirect:/list";
-    }
+//    @PostMapping("/test1")
+//    String test1(@RequestBody Map<String, Object> body) {
+//        System.out.println("요청 들어옴");
+//        System.out.println("body 값은 " + body);
+//        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
+//
+//        return "redirect:/list";
+//    }
 
     @DeleteMapping("/itemInfo/delete")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
 
         itemService.eraseItem(id);
 

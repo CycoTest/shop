@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="/css/navBar.css" rel="stylesheet">
+    <link href="/css/animatedLogin.css" rel="stylesheet">
+    <title>Modern Login Form</title>
+</head>
+<body>
+    <!-- navigation bar -->
+    <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
+
+    <!-- main body -->
+    <div class="main-body">
+        <div class="container" id="container">
+
+            <div class="form-container sign-up">
+                <form action="/register" method="post">
+                    <h1>Create Account</h1>
+                    <div class="social-icons">
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-google-plus-g"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <span>or use your username, display name, password for Registration</span>
+                    <label for="sign_username"></label>
+                    <input type="text" id="sign_username" name="sign_username" placeholder="username">
+                    <label for="sign_displayName"></label>
+                    <input type="text" id="sign_displayName" name="sign_displayName" placeholder="display name">
+                    <label for="sign_password"></label>
+                    <input type="password" id="sign_password" name="sign_password" placeholder="password">
+
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div class="form-container sign-in">
+                <form th:action="@{/login}" method="post">
+                    <h1>Log-In</h1>
+                    <div class="social-icons">
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-google-plus-g"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="#" class="icon">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <span>or use your username, password for Log In</span>
+
+                    <div th:if="${param.error}">
+                        <h4>Invalid username or password</h4>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <h4>You have been logged out</h4>
+                    </div>
+                    <label for="log_username"></label>
+                    <input type="text" id="log_username" name="username" placeholder="username">
+                    <label for="log_password"></label>
+                    <input type="password" id="log_password" name="password" placeholder="password">
+
+                    <a href="#">Forget Your Password?</a>
+                    <button type="submit">Log In</button>
+                </form>
+            </div>
+
+            <div class="toggle-container">
+                <div class="toggle">
+                    <div class="toggle-panel toggle-left">
+                        <h1>Welcome Back!</h1>
+                        <p>Enter your personal details to use all of site features</p>
+                        <button class="hidden" id="login">Log In</button>
+                    </div>
+
+                    <div class="toggle-panel toggle-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Register with your personal details to use all of site features</p>
+                        <button class="hidden" id="register">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- javascript -->
+    <script src="/js/animatedLogin.js" defer></script>
+</body>
+</html>

@@ -17,11 +17,22 @@
     <!-- navigation bar -->
     <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
 
-    <div class="detail">
-        <h4>상세 페이지</h4>
-        <img src="https://placehold.co/300" alt="image">
-        <h4 th:text="${itemDetail.title}"></h4>
-        <p th:text="${itemDetail.price + '원'}"></p>
+    <h4>마이 페이지</h4>
+
+    <div sec:authentication="principal">principal</div>
+    <div sec:authorize="isAuthenticated()">
+        <span>특정 권한이 있으면 보여주쇼</span>
+        <span>로그인 된 사람이 있으면 보여주쇼</span>
+        <p>Welcome, <span sec:authentication="name"></span>!</p>
+    </div>
+    <div sec:authorize="!isAuthenticated()">
+        <p>Please <a th:href="@{/member}">log in</a>.</p>
+    </div>
+
+    <!-- Debugging Section -->
+    <div>
+        <h3>Debugging Info</h3>
+        <p th:text="${auth}"></p>
     </div>
 </body>
 </html>

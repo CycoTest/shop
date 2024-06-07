@@ -21,4 +21,6 @@ public class Item {
     @Column(nullable = false)
     private Integer price;
 
+    @Column(nullable = false)
+    private String registerUser;
 }

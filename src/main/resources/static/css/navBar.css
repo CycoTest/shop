@@ -1,0 +1,56 @@
+/* Navigation Bar */
+.nav {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    font-family: 'Montserrat';
+}
+
+.nav a {
+    margin-right: 10px;
+    text-decoration: none;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+
+.nav .logo {
+    font-weight: 800;
+}
+
+.nav .loginStatus {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.nav .loginStatus span {
+    margin-right: 10px;
+}
+
+.nav .logoutBtn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input, button {
+    padding: 8px 13px;
+    margin-top: 5px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+button {
+    background: black;
+    color: white;
+    border: none;
+}
+
+input {
+    display: block;
+}

@@ -3,6 +3,8 @@ package com.personal.shop.service;
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -25,10 +27,11 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public void saveItem(String title, Integer price) {
+    public void saveItem(String title, Integer price, String registerUser) {
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
+        item.setRegisterUser(registerUser);
 
         itemRepository.save(item);
     }
