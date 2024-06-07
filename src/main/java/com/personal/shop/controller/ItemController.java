@@ -31,12 +31,18 @@ public class ItemController {
 
     @GetMapping("/itemInfo/write")
     String showItemWriteForm() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         return "detail/write";
     }
 
     @PostMapping("/itemInfo/write")
-    String addItem(String title, Integer price) {
+    String addItem(@RequestParam("title") String title,
+                   @RequestParam("price") Integer price,
+                   @RequestParam("uploader") String registerUser) {
         // 파라미터에 @ModelAttribute Item item 으로 해도 됨
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
@@ -46,7 +52,7 @@ public class ItemController {
             return "redirect:/member";
         }
 
-        itemService.saveItem(title, price);
+        itemService.saveItem(title, price, registerUser);
 
         return "redirect:/list";
     }
@@ -71,6 +77,10 @@ public class ItemController {
 
     @GetMapping("/itemInfo/{id}")
     String showEditItemForm(@PathVariable Long id, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         Optional<Item> result = itemService.editItem(id);
         if (result.isPresent()) {
@@ -85,6 +95,10 @@ public class ItemController {
 
     @PostMapping("/itemInfo/edit/{id}")
     String updateItem(@PathVariable Long id, String title, Integer price) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/member";
+        }
 
         Optional<Item> result = itemService.bringItemById(id);
         if (result.isPresent()) {
@@ -108,6 +122,10 @@ public class ItemController {
 
     @DeleteMapping("/itemInfo/delete")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
 
         itemService.eraseItem(id);
 

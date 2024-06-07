@@ -27,14 +27,11 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public void saveItem(String title, Integer price) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String registerUserName = auth.getName();
-
+    public void saveItem(String title, Integer price, String registerUser) {
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
-        item.setRegisterUser(registerUserName);
+        item.setRegisterUser(registerUser);
 
         itemRepository.save(item);
     }

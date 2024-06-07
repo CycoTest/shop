@@ -34,7 +34,7 @@
                     <td th:text="${i.title}"></td>
                     <td th:text="${i.price} + '원'"></td>
                     <td sec:authorize="isAuthenticated()">
-                        <span th:text=""></span>
+                        <span th:text="${i.registerUser}"></span>
                     </td>
                     <td>
                         <a th:href="@{ '/detail/' + ${i.id} }">상세보기</a>
