@@ -25,7 +25,6 @@ public class SecurityConfig {
         // CSRF 기능 끄기
         httpSecurity.csrf( (csrf) -> csrf.disable());
 
-
         httpSecurity.authorizeHttpRequests( (authorize)
                 -> authorize
                     .requestMatchers("/myPage", "/itemInfo/**").authenticated()
@@ -34,9 +33,9 @@ public class SecurityConfig {
 
         httpSecurity.formLogin((formLogin)
                 -> formLogin
-                    .loginPage("/login")
+                    .loginPage("/login") // The URL to the login page
                     .defaultSuccessUrl("/myPage", true)
-                    .failureUrl("/member")
+                    .failureUrl("/login")
         );
 
         httpSecurity.logout((logout)

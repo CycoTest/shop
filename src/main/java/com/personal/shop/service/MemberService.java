@@ -3,14 +3,13 @@ package com.personal.shop.service;
 import com.personal.shop.entity.Member;
 import com.personal.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -29,14 +28,8 @@ public class MemberService {
         String pwHash = passwordEncoder.encode(password);
         member.setPassword(pwHash);
 
-        // Check displayName and assign roles accordingly
-        List<String> roles = new ArrayList<>();
-        if ("admin".equalsIgnoreCase(displayName)) {
-            roles.add("ROLE_ADMIN");
-        } else {
-            roles.add("ROLE_USER");
-        }
-        member.setRoles(roles);
+        System.out.println(member);
+        log.debug("Saving member: {}", member);
 
         memberRepository.save(member);
     }

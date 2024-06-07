@@ -24,7 +24,7 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    @GetMapping("/member")
+    @GetMapping("/login")
     String showLoginForm() {
 
         return "members/animatedLogin";
@@ -36,13 +36,9 @@ public class MemberController {
                     @RequestParam("sign_displayName") String displayName)
             throws Exception {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
-            return "redirect:/list";
-        }
         memberService.saveMember(username, password, displayName);
 
-        return "redirect:/member";
+        return "redirect:/login";
     }
 
     @GetMapping("/myPage")

@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -25,8 +23,4 @@ public class Member {
 
     @Column(name = "display_name", nullable = false)
     private String displayName;
-
-    @ElementCollection
-    @Column(nullable = false)
-    private List<String> roles; // List to store roles of user
 }
