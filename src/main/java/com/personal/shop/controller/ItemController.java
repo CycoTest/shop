@@ -1,6 +1,7 @@
 package com.personal.shop.controller;
 
 import com.personal.shop.entity.Item;
+import com.personal.shop.repository.ItemRepository;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
 
+    private final ItemRepository itemRepository;
     private final ItemService itemService;
 
+    // Slice 클래스를 활용한 페이징 처리
     @GetMapping("/list")
-    String showList(Model model) {
+    String showList(Model model,
+                    @RequestParam(defaultValue = "0") Integer page) {
 
-        List<Item> result = itemService.bringItemList();
-        model.addAttribute("items", result);
+        int size = 5;
+        List<Item> items = itemService.getItemsSlice(page, size).getContent();
+        Map<String, Object> pageData = itemService.getPageData(page, size);
+
+        model.addAttribute("items", items);
+        model.addAttribute("pageData", pageData);
 
         return "base/list";
     }
@@ -111,15 +119,6 @@ public class ItemController {
         }
     }
 
-//    @PostMapping("/test1")
-//    String test1(@RequestBody Map<String, Object> body) {
-//        System.out.println("요청 들어옴");
-//        System.out.println("body 값은 " + body);
-//        System.out.println("body 에 저장된 name 값은 " + body.get("name"));
-//
-//        return "redirect:/list";
-//    }
-
     @DeleteMapping("/itemInfo/delete")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -131,4 +130,6 @@ public class ItemController {
 
         return ResponseEntity.status(200).body("삭제 완료");
     }
+
+
 }
