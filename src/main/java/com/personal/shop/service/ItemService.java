@@ -2,14 +2,12 @@ package com.personal.shop.service;
 
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -18,7 +16,9 @@ import java.util.*;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private int totalPages = 0;
 
+    // prototype of showList method
     public List<Item> bringItemList() {
 
         return itemRepository.findAll();
@@ -63,18 +63,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public int getTotalPages(int size) {
-        long totalItems = itemRepository.count();
-
-        return (int) Math.ceil((double) totalItems / size);
-    }
-
-    public Slice<Item> getItemsSlice(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-
-        return itemRepository.findSliceBy(pageable);
-    }
-
+    // pagination process in showList method
     public Map<String, Object> getPageData(int page, int size) {
         int totalPages = getTotalPages(size);
         int currentPage = page + 1;
@@ -95,5 +84,27 @@ public class ItemService {
         pageData.put("size", size);
 
         return pageData;
+    }
+
+    @PostConstruct
+    public void initializeTotalPages() {
+        int size = 5;
+        this.totalPages = calculateTotalPages(size);
+    }
+
+    public int calculateTotalPages(int size) {
+        long totalItems = itemRepository.count();
+
+        return (int) Math.ceil((double) totalItems / size);
+    }
+
+    public int getTotalPages(int size) {
+        return this.totalPages;
+    }
+
+    public Slice<Item> getItemsSlice(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return itemRepository.findSliceBy(pageable);
     }
 }

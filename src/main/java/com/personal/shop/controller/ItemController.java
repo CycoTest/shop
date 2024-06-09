@@ -4,10 +4,6 @@ import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -31,9 +28,11 @@ public class ItemController {
                     @RequestParam(defaultValue = "0") Integer page) {
 
         int size = 5;
+        List<Item> items = itemService.getItemsSlice(page, size).getContent();
+        Map<String, Object> pageData = itemService.getPageData(page, size);
 
-        model.addAttribute("items", itemService.getItemsSlice(page, size).getContent());
-        model.addAttribute("pageData", itemService.getPageData(page, size));
+        model.addAttribute("items", items);
+        model.addAttribute("pageData", pageData);
 
         return "base/list";
     }
