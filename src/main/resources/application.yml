@@ -13,8 +13,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://shoppingmall.mysql.database.azure.com/shop
-    username: cycoTest
-    password: 9125Tkdehchemd!
+    username: username of mysql
+    password: password of mysql
 
   jpa:
     # JPA 문법쓸 때, SQL 따로 출력 여부
