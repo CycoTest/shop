@@ -2,6 +2,7 @@ package com.personal.shop.controller;
 
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
+import com.personal.shop.service.AswS3Service;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class ItemController {
 
     private final ItemRepository itemRepository;
     private final ItemService itemService;
+    private final AswS3Service aswS3Service;
 
     // Slice 클래스를 활용한 페이징 처리
     @GetMapping("/list")
@@ -131,5 +133,14 @@ public class ItemController {
         return ResponseEntity.status(200).body("삭제 완료");
     }
 
+    @GetMapping("/presigned-url")
+    @ResponseBody
+    String getURL(@RequestParam String filename) {
+        System.out.println(filename);
+        String result = aswS3Service.createPreSignedUrl("test/" + filename);
+        System.out.println(result);
+
+        return result;
+    }
 
 }
