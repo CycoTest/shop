@@ -3,7 +3,9 @@
     <a href="/list">List</a>
     <a href="/itemInfo/write">Write</a>
     <div class="loginStatus">
-        <span sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name"></span>!</span>
+        <span sec:authorize="isAuthenticated()">
+            Welcome, <span th:text="${#authentication.principal.displayName}">회원님</span>!
+        </span>
         <a th:href="@{/login}" sec:authorize="!isAuthenticated()">로그인</a>
         <div sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
