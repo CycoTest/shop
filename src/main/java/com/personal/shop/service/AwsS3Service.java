@@ -11,7 +11,7 @@ import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
-public class AswS3Service {
+public class AwsS3Service {
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
