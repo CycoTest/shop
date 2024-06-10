@@ -128,9 +128,26 @@ public class ItemController {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
-        itemService.eraseItem(id);
+        String currentUsername = auth.getName(); // 현재 로그인한 사용자의 이름을 가져옴
+        Optional<Item> itemOptional = itemService.bringItemById(id);
 
-        return ResponseEntity.status(200).body("삭제 완료");
+        if (itemOptional.isPresent()) {
+            Item item = itemOptional.get();
+            String itemOwner = item.getRegisterUser(); // 작성자의 이름을 가져옴
+
+            if (currentUsername.equals(itemOwner) || currentUsername.equals("admin")) {
+                itemService.eraseItem(id);
+
+                return ResponseEntity.status(200).body("삭제 완료");
+            } else {
+
+                return ResponseEntity.status(403).body("삭제 권한이 없습니다");
+            }
+
+        } else {
+
+            return ResponseEntity.status(404).body("아이템을 찾을 수 없습니다");
+        }
     }
 
 }
