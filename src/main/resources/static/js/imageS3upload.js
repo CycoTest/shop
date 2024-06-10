@@ -33,7 +33,10 @@ async function getURL(event) {
         let uploadedImageUrl = url.split("?")[0];
         console.log(uploadedImageUrl);
 
-
+        if (uploadResponse.ok) {
+            document.getElementById('uploadImage').src = uploadedImageUrl;
+            document.getElementById("imageURL").value = uploadedImageUrl;
+        }
 
     } catch (error) {
         console.error(error)
