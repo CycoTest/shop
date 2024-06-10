@@ -1,5 +1,6 @@
 package com.personal.shop.controller;
 
+import com.personal.shop.entity.CustomUser;
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
 import com.personal.shop.service.AwsS3Service;
@@ -122,15 +123,28 @@ public class ItemController {
     }
 
     @DeleteMapping("/itemInfo/delete")
-    ResponseEntity<String> doRemoveItem(@RequestParam Long id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    ResponseEntity<String> doRemoveItem(@RequestParam Long id,  Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) {
-            return ResponseEntity.status(401).body("Unauthorized");
+
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        CustomUser customUser = (CustomUser) auth.getPrincipal();
+        Optional<Item> itemOptional = itemService.bringItemById(id);
+        if (itemOptional.isEmpty()) {
+
+            return ResponseEntity.status(404).body("상품을 찾을 수 없습니다.");
+        }
+
+        Item item = itemOptional.get();
+        if (!item.getRegisterUser().equals(customUser.getDisplayName()) && !customUser.getDisplayName().equalsIgnoreCase("admin")) {
+
+            return ResponseEntity.status(403).body("삭제 권한이 없습니다.");
         }
 
         itemService.eraseItem(id);
 
-        return ResponseEntity.status(200).body("삭제 완료");
+        return ResponseEntity.status(200).body("삭제가 완료됐습니다.");
     }
 
 }

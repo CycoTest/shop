@@ -13,20 +13,37 @@ document.addEventListener('DOMContentLoaded', function() {
                         'Content-Type': 'application/json'
                     }
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('삭제 중 오류가 발생했습니다.');
+                .then(response => {
+                    if (response.status === 401) {
+                        alert('로그인이 필요한 기능입니다');
+
+                        if (confirm('로그인 하시겠습니까?')) {
+                            window.location.href = '/login';
                         }
-                        return response.text();
-                    })
-                    .then(message => {
+
+                        return;
+                    } else if (response.status === 403) {
+                        alert('삭제 권한이 없습니다.');
+                        return;
+                    } else if (response.status === 404) {
+                        alert('상품을 찾을 수 없습니다.');
+                        return;
+                    } else if (!response.ok) {
+                        throw new Error('삭제 중 오류가 발생했습니다');
+                    }
+
+                    return response.text();
+                })
+                .then(message => {
+                    if (message) {
                         alert(message);
                         window.location.reload();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('삭제 중 오류가 발생했습니다.');
-                    });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error : ', error);
+                    alert('삭제 중 오류가 발생했습니다');
+                })
             }
         });
     });
