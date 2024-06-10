@@ -6,8 +6,10 @@
     padding: 0 100px;
 }
 
-.card img {
+.card img{
     width: 100px;
+    height: 100px;
+    object-fit: cover;
     margin-right: 20px;
 }
 
