@@ -29,11 +29,13 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public void saveItem(String title, Integer price, String registerUser) {
+    public void saveItem(String title, Integer price,
+                         String registerUser, String imageURL) {
         Item item = new Item();
         item.setTitle(title);
         item.setPrice(price);
         item.setRegisterUser(registerUser);
+        item.setImageUrl(imageURL);
 
         itemRepository.save(item);
     }

@@ -31,7 +31,10 @@
             </thead>
             <tbody>
                 <tr th:each="i : ${items}">
-                    <td><img src="https://placehold.co/300" alt="image"></td>
+                    <td>
+                        <img class="imageSize" th:if="${i.imageUrl != null && i.imageUrl != ''}" th:src="${i.imageUrl}" alt="">
+                        <img class="imageSize" th:unless="${i.imageUrl != null && i.imageUrl != ''}" src="https://placehold.co/300" alt="">
+                    </td>
                     <td th:text="${i.title}"></td>
                     <td th:text="${i.price} + '원'"></td>
                     <td>

@@ -23,4 +23,7 @@ public class Item {
 
     @Column(nullable = false)
     private String registerUser;
+
+    @Column(nullable = false)
+    private String imageUrl;
 }

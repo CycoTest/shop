@@ -32,15 +32,20 @@
         <input type="text" id="uploader" name="uploader" th:value="${#authentication.principal.displayName}" required>
         <br>
 
+        <!-- Hidden field to save the image URL -->
+        <input type="hidden" id="imageURL" name="imageURL">
+        <br>
+
         <button type="submit">전송</button>
         </form>
-    </div>
 
-    <!-- Redirect to login if not authenticated -->
-    <div sec:authorize="!isAuthenticated()">
-        <script>
-            window.location.href = /*[[@{/member}]]*/;
-        </script>
+        <!-- Image upload form -->
+        <div>
+            <img id="uploadImage" src="" alt="">
+            <input type="file" id="fileInput">
+        </div>
+
+        <script src="/js/imageS3upload.js" defer></script>
     </div>
 </body>
 </html>

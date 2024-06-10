@@ -33,6 +33,22 @@ spring:
     jdbc:
       initialize-schema: always
 
+  cloud:
+    aws:
+      credentials:
+        access-key: bucket access key
+        secret-key: bucket secret key
+      region:
+        static: ap-northeast-2
+      # custom aws property
+      s3:
+        bucket: cycotestspringmall
+
+
+
+
+
+
 server:
   servlet:
     session:

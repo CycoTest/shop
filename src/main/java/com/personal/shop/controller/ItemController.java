@@ -2,6 +2,7 @@ package com.personal.shop.controller;
 
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
+import com.personal.shop.service.AwsS3Service;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,8 @@ public class ItemController {
     @PostMapping("/itemInfo/write")
     String addItem(@RequestParam("title") String title,
                    @RequestParam("price") Integer price,
-                   @RequestParam("uploader") String registerUser) {
+                   @RequestParam("uploader") String registerUser,
+                   @RequestParam("imageURL") String imageURL) {
         // 파라미터에 @ModelAttribute Item item 으로 해도 됨
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
@@ -60,7 +62,7 @@ public class ItemController {
             return "redirect:/member";
         }
 
-        itemService.saveItem(title, price, registerUser);
+        itemService.saveItem(title, price, registerUser, imageURL);
 
         return "redirect:/list";
     }
@@ -130,6 +132,5 @@ public class ItemController {
 
         return ResponseEntity.status(200).body("삭제 완료");
     }
-
 
 }
