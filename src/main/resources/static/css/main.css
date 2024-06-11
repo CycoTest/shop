@@ -51,40 +51,6 @@
     margin-right: 10px;
 }
 
-/* notice board specific styles */
-.notice-board-container {
-    display: flex;
-    justify-content: center;
-    padding-left: 650px;
-    padding-right: 350px;
-    margin: 50px auto;
-}
-
-.notice-board table {
-    width: 100%;
-    max-width: 1200px;
-}
-
-.notice-board th, .notice-board td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-}
-
-.notice-board th {
-    background-color: black;
-    color: white;
-    text-align: center;
-}
-
-.notice-board td:nth-child(1) {
-    text-align: center;
-}
-
-.notice-board td:nth-child(4) {
-    text-align: right;
-}
-
 /* detail page */
 .detail {
     text-align: center;
