@@ -33,7 +33,9 @@
                 <tbody>
                 <tr th:each="i : ${notices}">
                     <td th:text="${i.id}"></td>
-                    <td th:text="${i.title}"></td>
+                    <td>
+                        <a th:href="@{ '/detail/' + ${i.id} }" th:text="${i.title}"></a>
+                    </td>
                     <td th:text="${i.author}"></td>
                     <td th:text="${i.postDate}"></td>
                 </tr>
