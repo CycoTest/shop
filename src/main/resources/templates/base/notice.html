@@ -47,5 +47,7 @@
     <!-- Pagination Controls -->
     <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
 
+    <!-- include external JavaScript file -->
+    <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
 </body>
 </html>
