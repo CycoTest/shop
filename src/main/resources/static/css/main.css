@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
 
-.card {
-    margin: 30px auto;
+.card-container {
     display: flex;
+    justify-content: center;
+    padding-left: 300px;
+    padding-right: 300px;
+    margin: 50px auto;
+}
+
+.card {
     padding: 0 100px;
 }
 
@@ -21,13 +27,12 @@
 .card th, .card td {
     border: 1px solid #ccc;
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 .card th {
     background-color: black;
     color: white;
-    text-align: center;
 }
 
 .card td img, .card td a {
@@ -46,45 +51,38 @@
     margin-right: 10px;
 }
 
-/* pagination */
-.pagination-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination {
+/* notice board specific styles */
+.notice-board-container {
     display: flex;
     justify-content: center;
-    list-style: none;
-    padding: 0;
+    padding-left: 650px;
+    padding-right: 350px;
+    margin: 50px auto;
 }
 
-.pagination ul {
-    list-style-type: none;
-    padding: 0;
+.notice-board table {
+    width: 100%;
+    max-width: 1200px;
 }
 
-.pagination li {
-    margin: 0 5px;
+.notice-board th, .notice-board td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
 }
 
-.pagination li a {
-    text-decoration: none;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #007bff;
-}
-
-.pagination li a.active {
-    background-color: #007bff;
+.notice-board th {
+    background-color: black;
     color: white;
-    font-weight: bold;
+    text-align: center;
 }
 
-.pagination li a.active:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.notice-board td:nth-child(1) {
+    text-align: center;
+}
+
+.notice-board td:nth-child(4) {
+    text-align: right;
 }
 
 /* detail page */
