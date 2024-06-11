@@ -16,7 +16,8 @@ import java.util.*;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private int totalPages = 0;
+    private final PaginationService paginationService;
+    private final CacheService cacheService;
 
     // prototype of showList method
     public List<Item> bringItemList() {
@@ -65,48 +66,21 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    // pagination process in showList method
-    public Map<String, Object> getPageData(int page, int size) {
-        int totalPages = getTotalPages(size);
-        int currentPage = page + 1;
-
-        // 숫자 묶음 계산
-        int pagesPerBlock = 5;
-        int currentBlock = (int) Math.ceil((double) currentPage / pagesPerBlock);
-
-        // 첫 장과 끝 장 계산
-        int startPage = (currentBlock - 1) * pagesPerBlock + 1;
-        int endPage = Math.min(currentBlock * pagesPerBlock, totalPages);
-
-        Map<String, Object> pageData = new HashMap<>();
-        pageData.put("totalPages", totalPages);
-        pageData.put("currentPage", currentPage);
-        pageData.put("startPage", startPage);
-        pageData.put("endPage", endPage);
-        pageData.put("size", size);
-
-        return pageData;
-    }
-
-    @PostConstruct
-    public void initializeTotalPages() {
-        int size = 5;
-        this.totalPages = calculateTotalPages(size);
-    }
-
     public int calculateTotalPages(int size) {
         long totalItems = itemRepository.count();
 
         return (int) Math.ceil((double) totalItems / size);
     }
 
-    public int getTotalPages(int size) {
-        return this.totalPages;
-    }
-
     public Slice<Item> getItemsSlice(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = paginationService.createPageable(page, size);
 
         return itemRepository.findSliceBy(pageable);
+    }
+
+    public Map<String, Object> getPageData(int page, int size) {
+        long totalItems = cacheService.getItemCount();
+
+        return paginationService.getPageData(page, size, totalItems);
     }
 }

@@ -18,9 +18,10 @@
     <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
 
     <!-- main body -->
-    <div class="card">
-        <table>
-            <thead>
+    <div class="card-container">
+        <div class="card">
+            <table>
+                <thead>
                 <tr>
                     <th>상품 사진</th>
                     <th>상품 이름</th>
@@ -28,8 +29,8 @@
                     <th>작성자</th>
                     <th>선택 기능</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr th:each="i : ${items}">
                     <td>
                         <img class="imageSize" th:if="${i.imageUrl != null && i.imageUrl != ''}" th:src="${i.imageUrl}" alt="">
@@ -47,8 +48,9 @@
                         <a href="#" class="delete-item" th:data-id="${i.id}">삭제하기</a>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Pagination Controls -->

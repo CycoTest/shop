@@ -1,8 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
 
-.card {
-    margin: 30px auto;
+.card-container {
     display: flex;
+    justify-content: center;
+    padding-left: 300px;
+    padding-right: 300px;
+    margin: 50px auto;
+}
+
+.card {
     padding: 0 100px;
 }
 
@@ -21,13 +27,12 @@
 .card th, .card td {
     border: 1px solid #ccc;
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 .card th {
     background-color: black;
     color: white;
-    text-align: center;
 }
 
 .card td img, .card td a {
@@ -44,47 +49,6 @@
 
 .card td a {
     margin-right: 10px;
-}
-
-/* pagination */
-.pagination-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-}
-
-.pagination ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.pagination li {
-    margin: 0 5px;
-}
-
-.pagination li a {
-    text-decoration: none;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #007bff;
-}
-
-.pagination li a.active {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-}
-
-.pagination li a.active:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
 }
 
 /* detail page */
