@@ -3,8 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath && !link.href.includes('/itemInfo/write')) {
+        const linkPath = link.getAttribute('href')
+        if (linkPath === currentPath) {
             link.classList.add('active')
+        } else {
+            link.classList.remove('active')
         }
     });
 });
