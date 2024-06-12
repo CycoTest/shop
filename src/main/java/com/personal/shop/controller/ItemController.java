@@ -3,7 +3,6 @@ package com.personal.shop.controller;
 import com.personal.shop.entity.CustomUser;
 import com.personal.shop.entity.Item;
 import com.personal.shop.repository.ItemRepository;
-import com.personal.shop.service.AwsS3Service;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,10 +42,10 @@ public class ItemController {
     String showItemWriteForm() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/member";
+            return "redirect:/login";
         }
 
-        return "detail/write";
+        return "detail/item/itemWrite";
     }
 
     @PostMapping("/itemInfo/write")
@@ -60,7 +59,7 @@ public class ItemController {
         // 비지니스 로직은 service 로 뺌
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/member";
+            return "redirect:/login";
         }
 
         itemService.saveItem(title, price, registerUser, imageURL);
@@ -76,7 +75,7 @@ public class ItemController {
             model.addAttribute("itemDetail", result.get());
 //            System.out.println(result.get());
 
-            return "detail/detail";
+            return "detail/item/itemDetail";
         } else {
 
             return "redirect:/list";
@@ -90,14 +89,14 @@ public class ItemController {
     String showEditItemForm(@PathVariable Long id, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/member";
+            return "redirect:/login";
         }
 
         Optional<Item> result = itemService.editItem(id);
         if (result.isPresent()) {
             model.addAttribute("itemData", result.get());
 
-            return "detail/edit";
+            return "detail/item/itemEdit";
         } else {
 
             return "redirect:/list";
@@ -108,7 +107,7 @@ public class ItemController {
     String updateItem(@PathVariable Long id, String title, Integer price) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/member";
+            return "redirect:/login";
         }
 
         Optional<Item> result = itemService.bringItemById(id);
@@ -146,5 +145,4 @@ public class ItemController {
 
         return ResponseEntity.status(200).body("삭제가 완료됐습니다.");
     }
-
 }

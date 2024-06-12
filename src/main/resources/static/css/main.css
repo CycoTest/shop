@@ -51,12 +51,6 @@
     margin-right: 10px;
 }
 
-.write-btn:hover {
-    background-color: black;
-    color: white;
-    border: 1px solid black;
-}
-
 /* detail page */
 .detail {
     text-align: center;
