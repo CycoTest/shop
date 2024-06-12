@@ -1,5 +1,6 @@
 package com.personal.shop.service;
 
+import com.personal.shop.entity.Item;
 import com.personal.shop.entity.Notice;
 import com.personal.shop.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @Service
@@ -27,5 +29,15 @@ public class NoticeService {
         long totalNotice = cacheService.getNoticeCount();
 
         return paginationService.getPageData(page, size, totalNotice);
+    }
+
+    public void saveItem(String title, String contents, String author) {
+        Notice notice = new Notice();
+        notice.setTitle(title);
+        notice.setContents(contents);
+        notice.setAuthor(author);
+        notice.setPostDate(LocalDate.now());
+
+        noticeRepository.save(notice);
     }
 }
