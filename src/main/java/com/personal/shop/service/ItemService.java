@@ -39,7 +39,6 @@ public class ItemService {
         item.setImageUrl(imageURL);
 
         itemRepository.save(item);
-        cacheService.increaseItemCount();
     }
 
     public void saveItemById(Long id, String title, Integer price) {
@@ -63,8 +62,14 @@ public class ItemService {
     }
 
     public void eraseItem(Long id) {
+
         itemRepository.deleteById(id);
-        cacheService.decreaseItemCount();
+    }
+
+    public int calculateTotalPages(int size) {
+        long totalItems = itemRepository.count();
+
+        return (int) Math.ceil((double) totalItems / size);
     }
 
     public Slice<Item> getItemsSlice(int page, int size) {

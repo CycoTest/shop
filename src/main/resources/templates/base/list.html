@@ -33,20 +33,17 @@
                 <tbody>
                 <tr th:each="i : ${items}">
                     <td>
-                        <a th:href="@{ '/detail/' + ${i.id} }">
-                            <img class="imageSize" th:if="${i.imageUrl != null && i.imageUrl != ''}" th:src="${i.imageUrl}" alt="">
-                            <img class="imageSize" th:unless="${i.imageUrl != null && i.imageUrl != ''}" src="https://placehold.co/300" alt="">
-                        </a>
+                        <img class="imageSize" th:if="${i.imageUrl != null && i.imageUrl != ''}" th:src="${i.imageUrl}" alt="">
+                        <img class="imageSize" th:unless="${i.imageUrl != null && i.imageUrl != ''}" src="https://placehold.co/300" alt="">
                     </td>
-                    <td>
-                        <a th:href="@{ '/detail/' + ${i.id} }" th:text="${i.title}"></a>
-                    </td>
+                    <td th:text="${i.title}"></td>
                     <td th:text="${i.price} + '원'"></td>
                     <td>
                         <span th:if="${i.registerUser != null }" th:text="${i.registerUser}"></span>
                         <span th:unless="${i.registerUser != null}"></span>
                     </td>
                     <td>
+                        <a th:href="@{ '/detail/' + ${i.id} }">상세보기</a>
                         <a th:href="@{'/itemInfo/' + ${i.id} }">수정하기</a>
                         <a href="#" class="delete-item" th:data-id="${i.id}">삭제하기</a>
                     </td>
@@ -60,7 +57,6 @@
     <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
 
     <!-- include external JavaScript file -->
-    <script src="/js/itemRemove.js" defer></script>
-    <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
+    <script src="/js/item.js" defer></script>
 </body>
 </html>
