@@ -24,11 +24,21 @@ public class CacheService {
         this.noticeCount = noticeRepository.count();
     }
 
-    public void updateItemCount(long itemCount) {
+    // 상품 게시판의 총 페이지가 추가되거나 줄어들었을 때 사용
+    public void updateItemCount(long newItemCount) {
 
-        this.itemCount = itemCount;
+        this.itemCount = newItemCount;
     }
 
+    public void increaseItemCount() {
+        this.itemCount++;
+    }
+
+    public void decreaseItemCount() {
+        this.itemCount--;
+    }
+
+    // 공지사항 게시판의 총 페이지가 추가되거나 줄어들었을 때 사용
     public void updateNoticeCount(long noticeCount) {
 
         this.noticeCount = noticeCount;

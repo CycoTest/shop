@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById('fileInput').addEventListener('change', getURL)
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        getURL(event, 'item')
+    });
 });
 
-async function getURL(event) {
+async function getURL(event, type) {
     let file = event.target.files[0];
     if (!file) {
         console.error('No file selected');
@@ -13,7 +15,8 @@ async function getURL(event) {
     let name = encodeURIComponent(file.name);
 
     try {
-        let response = await fetch('/presigned-url?filename=' + name);
+        // Use backticks for template literals
+        let response = await fetch(`/presigned-url?filename=${name}&type=${type}`);
         if (!response.ok) throw new Error('Failed to get pre-signed URL');
 
         let url = await response.text();

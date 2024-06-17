@@ -18,8 +18,6 @@ public class PaginationService {
     private final ItemRepository itemRepository;
     private final NoticeRepository noticeRepository;
 
-    private int totalPages = 0;
-
     public Pageable createPageable(int page, int size) {
 
         return PageRequest.of(page, size);

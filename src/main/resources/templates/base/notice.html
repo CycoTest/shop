@@ -33,7 +33,9 @@
                 <tbody>
                 <tr th:each="i : ${notices}">
                     <td th:text="${i.id}"></td>
-                    <td th:text="${i.title}"></td>
+                    <td>
+                        <a th:href="@{ '/detail/' + ${i.id} }" th:text="${i.title}"></a>
+                    </td>
                     <td th:text="${i.author}"></td>
                     <td th:text="${i.postDate}"></td>
                 </tr>
@@ -45,5 +47,7 @@
     <!-- Pagination Controls -->
     <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
 
+    <!-- include external JavaScript file -->
+    <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
 </body>
 </html>

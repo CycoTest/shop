@@ -1,8 +1,10 @@
 <div class="nav" th:fragment="NavBar">
     <a class="logo">Spring Mall</a>
-    <a href="/notice">Notice</a>
-    <a href="/list">List</a>
-    <a href="/itemInfo/write">Write</a>
+    <div class="nav-links" id="nav-links">
+        <a href="/notice" id="notice-link">Notice</a>
+        <a href="/list" id="list-link">List</a>
+        <a href="#" id="write-link">Write</a>
+    </div>
     <div class="loginStatus">
         <span sec:authorize="isAuthenticated()">
             Welcome, <span th:text="${#authentication.principal.displayName}">회원님</span>!
@@ -14,5 +16,4 @@
             </form>
         </div>
     </div>
-
 </div>
