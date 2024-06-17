@@ -38,10 +38,6 @@ public class NoticeController {
 
     @GetMapping("/noticeInfo/write")
     String showNoticeWriteForm() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         return "detail/notice/noticeWrite";
     }
@@ -54,10 +50,6 @@ public class NoticeController {
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
         // 비지니스 로직은 service 로 뺌
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         noticeService.saveItem(title, contents, author);
 

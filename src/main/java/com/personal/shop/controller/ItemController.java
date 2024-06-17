@@ -7,7 +7,6 @@ import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +39,6 @@ public class ItemController {
 
     @GetMapping("/itemInfo/write")
     String showItemWriteForm() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         return "detail/item/itemWrite";
     }
@@ -57,10 +52,6 @@ public class ItemController {
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에
         // 비지니스 로직은 service 로 뺌
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         itemService.saveItem(title, price, registerUser, imageURL);
 
@@ -86,15 +77,21 @@ public class ItemController {
     }
 
     @GetMapping("/itemInfo/{id}")
-    String showEditItemForm(@PathVariable Long id, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
+    String showEditItemForm(@PathVariable Long id,
+                            Model model,
+                            Authentication auth) {
 
         Optional<Item> result = itemService.editItem(id);
         if (result.isPresent()) {
-            model.addAttribute("itemData", result.get());
+            Item item = result.get();
+            CustomUser customUser = (CustomUser) auth.getPrincipal();
+            if (!item.getRegisterUser().equals(customUser.getDisplayName()) && !customUser.getDisplayName().equalsIgnoreCase("admin")) {
+                model.addAttribute("errorMessage", "수정할 권한이 없습니다.");
+
+                return "forward:/error";
+            }
+
+            model.addAttribute("itemData", item);
 
             return "detail/item/itemEdit";
         } else {
@@ -105,10 +102,6 @@ public class ItemController {
 
     @PostMapping("/itemInfo/edit/{id}")
     String updateItem(@PathVariable Long id, String title, Integer price) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) {
-            return "redirect:/login";
-        }
 
         Optional<Item> result = itemService.bringItemById(id);
         if (result.isPresent()) {
@@ -122,7 +115,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/itemInfo/delete")
-    ResponseEntity<String> doRemoveItem(@RequestParam Long id,  Authentication auth) {
+    ResponseEntity<String> doRemoveItem(@RequestParam Long id, Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) {
 
             return ResponseEntity.status(401).body("로그인이 필요합니다.");
