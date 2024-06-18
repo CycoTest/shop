@@ -17,6 +17,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.lang.reflect.AccessibleObject;
 
@@ -32,18 +33,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                // CSRF 기능 끄기
-                .csrf(AbstractHttpConfigurer::disable)
-//                // CSRF 기능 켜기
-//                .csrf(csrf
-//                -> csrf
-//                    .csrfTokenRepository(csrfTokenRepository())
-//                    .ignoringRequestMatchers("/login", "/register"))
+                // CSRF 기능 켜기
+                .csrf(csrf
+                -> csrf
+                    .csrfTokenRepository(csrfTokenRepository())
+                    .ignoringRequestMatchers("/login", "/register"))
 
                 .authorizeHttpRequests(authorize
                 -> authorize
                     .requestMatchers("/login", "/register").permitAll()
-                    .requestMatchers("/myPage", "/itemInfo/**", "/noticeInfo/**").hasAnyAuthority("USER", "ADMIN")
+                    .requestMatchers("/myPage", "/itemInfo/**", "/noticeInfo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                     .requestMatchers("/**").permitAll())
 
                 .formLogin(formLogin
@@ -59,16 +58,23 @@ public class SecurityConfig {
                     .logoutSuccessUrl("/list") // redirect to Item List page
                     .permitAll())
 
-                // 인증되지 않은 사용자의 요청에 의한 401 상태 코드를 반환하도록 설정
+                // 인증되지 않은 사용자의 요청에 의한 설정
                 .exceptionHandling(exceptionHandling
                 -> exceptionHandling
-                    .authenticationEntryPoint(((request, response, authException) -> response.sendRedirect("/login")))
-                        .accessDeniedHandler(customAccessDeniedHandler()))
+                    // 401, 403
+                    .authenticationEntryPoint(((request, response, authException) -> {
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                        response.getWriter().write("로그인이 필요합니다.");
+                    }))
+                    // 404
+                    .accessDeniedHandler(customAccessDeniedHandler()))
 
                 // Enable CORS with specific configurations
                 .cors(cors
                 -> cors
-                    .configurationSource(corsConfigurationSource()));
+                    .configurationSource(corsConfigurationSource()))
+
+                .addFilterBefore(characterEncodingFilter(), org.springframework.web.filter.CorsFilter.class);
 
         return httpSecurity.build();
     }
@@ -79,14 +85,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    // CSRF 기능 켜기
-//    @Bean
-//    public CsrfTokenRepository csrfTokenRepository() {
-//        HttpSessionCsrfTokenRepository csrfRepository = new HttpSessionCsrfTokenRepository();
-//        csrfRepository.setHeaderName("X-XSRF-TOKEN");
-//
-//        return csrfRepository;
-//    }
+    // CSRF 기능 켜기
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository csrfRepository = new HttpSessionCsrfTokenRepository();
+        csrfRepository.setHeaderName("X-XSRF-TOKEN");
+
+        return csrfRepository;
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -109,7 +115,18 @@ public class SecurityConfig {
     @Bean
     public AccessDeniedHandler customAccessDeniedHandler() {
 
-        return ((request, response, accessDeniedException)
-                -> response.sendRedirect("/access-denied"));
+        return ((request, response, accessDeniedException) -> {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write("엑세스 거부 : 권한이 없습니다.");
+        });
+    }
+
+    @Bean
+    public CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter charFilter = new CharacterEncodingFilter();
+        charFilter.setEncoding("UTF-8");
+        charFilter.setForceEncoding(true);
+
+        return charFilter;
     }
 }

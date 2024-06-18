@@ -7,43 +7,47 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemId = this.getAttribute('data-id');
 
             if (confirm('정말로 삭제하시겠습니까?')) {
+                const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+                const headers = {
+                    'Content-Type' : 'application/json; charset=UTF-8'
+                };
+                headers[csrfHeader] = csrfToken;
+
                 fetch(`/itemInfo/delete?id=${itemId}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    headers: headers
                 })
                 .then(response => {
-                    if (response.status === 401) {
-                        alert('로그인이 필요한 기능입니다');
-
+                    return response.text().then(message => {
+                        return { status: response.status, message };
+                    });
+                })
+                .then(({ status, message}) => {
+                    if (status === 401) {
+                        alert(message);
                         if (confirm('로그인 하시겠습니까?')) {
                             window.location.href = '/login';
                         }
 
-                        return;
-                    } else if (response.status === 403) {
-                        alert('삭제 권한이 없습니다.');
-                        return;
-                    } else if (response.status === 404) {
-                        alert('상품을 찾을 수 없습니다.');
-                        return;
-                    } else if (!response.ok) {
-                        throw new Error('삭제 중 오류가 발생했습니다');
-                    }
+                    } else if (status === 403) {
+                        alert(message);
 
-                    return response.text();
-                })
-                .then(message => {
-                    if (message) {
+                    } else if (status === 404) {
+                        alert(message);
+
+                    } else if (status === 200) {
                         alert(message);
                         window.location.reload();
+
+                    } else {
+                        throw new Error(message);
                     }
                 })
                 .catch(error => {
-                    console.error('Error : ', error);
-                    alert('삭제 중 오류가 발생했습니다');
-                })
+                    alert(error.message);
+                });
             }
         });
     });
