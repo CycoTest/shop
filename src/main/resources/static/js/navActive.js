@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navLinks.forEach(link => {
         const linkPath = link.getAttribute('href')
-        if (linkPath === currentPath) {
+        if (linkPath === currentPath ||
+            (currentPath.includes('/itemInfo/write') && link.id === 'write-link') ||
+            (currentPath.includes('/noticeInfo/write') && link.id === 'write-link')) {
             link.classList.add('active')
         } else {
             link.classList.remove('active')
