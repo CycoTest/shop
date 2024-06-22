@@ -50,8 +50,8 @@
                         <span th:unless="${i.registerUser != null}"></span>
                     </td>
                     <td>
-                        <a th:href="@{'/itemInfo/' + ${i.id} }">수정하기</a>
-                        <a href="#" class="delete-item" th:data-id="${i.id}">삭제하기</a>
+                        <a th:href="@{ '/itemInfo/edit/' + ${i.id} }" sec:authorize="isAuthenticated()">수정하기</a>
+                        <a href="#" class="delete-item" th:data-id="${i.id}" sec:authorize="isAuthenticated()">삭제하기</a>
                     </td>
                 </tr>
                 </tbody>
@@ -59,10 +59,20 @@
         </div>
     </div>
 
+    <!-- Error Message -->
+    <input type="hidden" id="serverErrorMessage" th:value="${errorMessage}"/>
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
     <!-- Pagination Controls -->
     <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
 
     <!-- include external JavaScript file -->
+    <script src="/js/errorModal.js" defer></script>
     <script src="/js/itemRemove.js" defer></script>
     <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
 </body>
