@@ -43,18 +43,18 @@ public class ItemService {
     }
 
     public void saveItemById(Long id, String title, Integer price) {
-        Item item = new Item();
-        item.setId(id);
+        Optional<Item> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isPresent()) {
+            Item item = optionalItem.get();
+            item.setId(id);
 
-        if (title.length() > 255) {
+            if (title.length() <= 255) {
+                item.setTitle(title);
+            }
+            item.setPrice(price);
 
-        } else {
-            item.setTitle(title);
+            itemRepository.save(item);
         }
-
-        item.setPrice(price);
-
-        itemRepository.save(item);
     }
 
     public Optional<Item> editItem(Long id) {

@@ -11,16 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
     writeLink.addEventListener('click', (event) => {
         event.preventDefault();
         fetch('/api/check-auth')
-            .then(response => {
-                if (response.status === 200) {
-                    window.location.href = writeLink.href;
-                } else {
-                    alert('로그인이 필요합니다');
-                    window.location.href = '/login';
-                }
-            })
-            .catch(error => {
-                console.error('Error : ', error);
-            });
+        .then(response => {
+            if (response.status === 200) {
+                window.location.href = writeLink.href;
+            } else {
+                alert('로그인이 필요합니다');
+                window.location.href = '/login';
+            }
+        })
+        .catch(error => {
+            console.error('Error : ', error);
+        });
     });
 });

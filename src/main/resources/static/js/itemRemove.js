@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (status === 401) {
                         alert(message);
                         if (confirm('로그인 하시겠습니까?')) {
-                            window.location.href = '/login';
+                            window.location.href = '/login?message=login_required';
                         }
 
                     } else if (status === 403) {
@@ -51,4 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Show login required message if present in URL
+    const urlParms = new URLSearchParams(window.location.href);
+    const message = urlParms.get('message');
+    if (message === 'login_required') {
+        alert('로그인이 필요합니다.');
+    }
 });
