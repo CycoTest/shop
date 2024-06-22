@@ -6,10 +6,12 @@ import com.personal.shop.repository.ItemRepository;
 import com.personal.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,7 @@ public class ItemController {
     }
 
     @GetMapping("/itemInfo/write")
+    @PreAuthorize("isAuthenticated()")
     String showItemWriteForm() {
 
         return "detail/item/itemWrite";
@@ -76,33 +79,41 @@ public class ItemController {
         // 유저 잘못 = 4XX, 서버 잘못 = 5XX, 정상 작동 = 200
     }
 
-    @GetMapping("/itemInfo/{id}")
+    // 수정 폼 페이지 Read
+    @GetMapping("/itemInfo/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
     String showEditItemForm(@PathVariable Long id,
                             Model model,
+                            RedirectAttributes redirectAttributes,
                             Authentication auth) {
-
+        // 유저가 선택한 item 조회
         Optional<Item> result = itemService.editItem(id);
         if (result.isPresent()) {
             Item item = result.get();
             CustomUser customUser = (CustomUser) auth.getPrincipal();
+            // 현재 유저와 item 업로더가 일치하지 않거나 관리자가 아닌 경우
             if (!item.getRegisterUser().equals(customUser.getDisplayName()) && !customUser.getDisplayName().equalsIgnoreCase("admin")) {
-                model.addAttribute("errorMessage", "수정할 권한이 없습니다.");
+                redirectAttributes.addFlashAttribute("errorMessage", "수정할 권한이 없습니다.");
 
-                return "forward:/error";
+                return "redirect:/list";
             }
 
+            // item 수정 페이지로 리디렉션 url 반환
             model.addAttribute("itemData", item);
-
             return "detail/item/itemEdit";
+
         } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "상품을 찾을 수 없습니다.");
 
             return "redirect:/list";
         }
     }
 
+    // item 수정 Update
     @PostMapping("/itemInfo/edit/{id}")
+    @PreAuthorize("isAuthenticated()")
     String updateItem(@PathVariable Long id, String title, Integer price) {
-
+        // item 조회
         Optional<Item> result = itemService.bringItemById(id);
         if (result.isPresent()) {
             itemService.saveItemById(id, title, price);
@@ -115,11 +126,8 @@ public class ItemController {
     }
 
     @DeleteMapping("/itemInfo/delete")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id, Authentication auth) {
-        if (auth == null || !auth.isAuthenticated()) {
-
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
 
         CustomUser customUser = (CustomUser) auth.getPrincipal();
         Optional<Item> itemOptional = itemService.bringItemById(id);
