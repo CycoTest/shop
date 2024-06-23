@@ -30,7 +30,7 @@
                     <th>상품 이름</th>
                     <th>상품 가격</th>
                     <th>작성자</th>
-                    <th>선택 기능</th>
+                    <th sec:authorize="isAuthenticated()">선택 기능</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,9 +49,9 @@
                         <span th:if="${i.registerUser != null }" th:text="${i.registerUser}"></span>
                         <span th:unless="${i.registerUser != null}"></span>
                     </td>
-                    <td>
-                        <a th:href="@{ '/itemInfo/edit/' + ${i.id} }" sec:authorize="isAuthenticated()">수정하기</a>
-                        <a href="#" class="delete-item" th:data-id="${i.id}" sec:authorize="isAuthenticated()">삭제하기</a>
+                    <td sec:authorize="isAuthenticated()">
+                        <a th:href="@{ '/itemInfo/edit/' + ${i.id} }">수정하기</a>
+                        <a href="#" class="delete-item" th:data-id="${i.id}">삭제하기</a>
                     </td>
                 </tr>
                 </tbody>
