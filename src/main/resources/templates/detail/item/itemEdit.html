@@ -9,6 +9,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <meta th:replace="~{/fragments/csrfToken :: CSRF_TOKEN}"/>
     <link th:replace="~{/fragments/config.html :: CommonConfig}">
     <link href="/css/main.css" rel="stylesheet">
     <title>Document</title>
@@ -27,8 +28,7 @@
         <input type="number" id="price" name="price" th:value="${itemData.price}" required>
         <br>
 
-        // CSRF 기능 켰을 때, form 태그마다 추가해줘야 하는 것
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div th:replace="~{fragments/csrfToken :: CSRF_TOKEN}"></div>
 
         <button type="submit">수정하기</button>
     </form>
