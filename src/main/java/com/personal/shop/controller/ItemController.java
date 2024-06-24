@@ -50,7 +50,7 @@ public class ItemController {
     String addItem(@RequestParam("title") String title,
                    @RequestParam("price") Integer price,
                    @RequestParam("uploader") String registerUser,
-                   @RequestParam("imageURL") String imageURL) {
+                   @RequestParam(value = "imageURL", required = false) String imageURL) {
         // 파라미터에 @ModelAttribute Item item 으로 해도 됨
         // 대신 이렇게 할 경우, itemRepository.save(item); 만 쓰면 됨
         // 하지만 함수 하나당 기능은 하나씩만 저장하는 게 낫기 때문에

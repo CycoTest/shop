@@ -1,14 +1,17 @@
 package com.personal.shop.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.time.Duration;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AwsS3Service {
@@ -16,6 +19,7 @@ public class AwsS3Service {
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     private final S3Presigner s3Presigner;
+    private final S3Client s3Client;
 
     public String createPreSignedUrl(String path) {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -27,7 +31,9 @@ public class AwsS3Service {
                 .signatureDuration(Duration.ofMinutes(5)) // The Url will expire in 5 minutes
                 .putObjectRequest(putObjectRequest)
                 .build();
-
+        log.info("Testing AwsS3Service");
         return s3Presigner.presignPutObject(preSignRequest).url().toString();
     }
+
+
 }

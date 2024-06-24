@@ -51,6 +51,14 @@ server:
       cookie:
         max-age: 5m
   port: 8080
+
 logging:
   level:
-    com.personal.shop: info
+    root: INFO
+    com.personal.shop: DEBUG
+    com.personal.shop.controller: TRACE
+    com.personal.shop.service: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    com.amazons: DEBUG
+    software.amazon.awssdk: DEBUG
