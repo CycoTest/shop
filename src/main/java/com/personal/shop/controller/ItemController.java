@@ -40,7 +40,7 @@ public class ItemController {
     }
 
     @GetMapping("/itemInfo/write")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     String showItemWriteForm() {
 
         return "detail/item/itemWrite";
@@ -81,7 +81,7 @@ public class ItemController {
 
     // 수정 폼 페이지 Read
     @GetMapping("/itemInfo/edit/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     String showEditItemForm(@PathVariable Long id,
                             Model model,
                             RedirectAttributes redirectAttributes,
@@ -111,7 +111,7 @@ public class ItemController {
 
     // item 수정 Update
     @PostMapping("/itemInfo/edit/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     String updateItem(@PathVariable Long id, String title, Integer price) {
         // item 조회
         Optional<Item> result = itemService.bringItemById(id);
@@ -126,7 +126,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/itemInfo/delete")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     ResponseEntity<String> doRemoveItem(@RequestParam Long id, Authentication auth) {
 
         CustomUser customUser = (CustomUser) auth.getPrincipal();
