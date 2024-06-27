@@ -33,7 +33,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-
+    cancelFileButton.addEventListener('click', async function() {
+        console.log('삭제 버튼이 클릭되었습니다.');
+        console.log('현재 uploadedImageUrl:', uploadedImageUrl);
+        if (uploadedImageUrl) {
+            const deleteResult = await deleteFile(uploadedImageUrl);
+            if (deleteResult.success) {
+                console.log('파일이 성공적으로 삭제되었습니다.');
+            } else {
+                console.error('파일 삭제 실패:', deleteResult.error);
+            }
+        } else {
+            console.log('삭제할 이미지 URL이 없습니다.');
+        }
+        resetFileInput();
+    });
 
     form.addEventListener('submit', function(e) {
         console.log('폼 제출이 시작되었습니다.');
@@ -89,4 +103,44 @@ async function uploadFile(file) {
     return { success: true, url: uploadImageUrl };
 }
 
+async function deleteFile(fileUrl) {
+    console.log('deleteFile 함수가 호출되었습니다. URL:', fileUrl);
+    if (!fileUrl) {
+        console.error('파일 URL이 제공되지 않았습니다.');
+        return { success: false, error: 'File URL is missing' };
+    }
+    try {
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
+        const response = await fetch(`/delete-image?url=${encodeURIComponent(fileUrl)}`, {
+            method: 'DELETE',
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        });
+
+        console.log('Delete request sent. Response:', response);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`파일 삭제 요청 실패: ${response.status} ${errorText}`);
+        }
+
+        const result = await response.text();
+        return { success: true, message: result };
+    } catch (error) {
+        console.error('파일 삭제 중 오류 발생:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+function resetFileInput() {
+    document.getElementById('fileInput').value = '';
+    document.getElementById('selectedFileName').textContent = '';
+    document.getElementById('uploadImage').style.display = 'none';
+    document.getElementById('imageURL').value = '';
+    document.getElementById('cancelFileBtn').style.display = 'none';
+    selectedFile = null;
+    uploadedImageUrl = null;
+}
