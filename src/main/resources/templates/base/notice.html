@@ -2,25 +2,16 @@
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+        th:replace="~{/fragments/layouts/board.html :: boardLayout(~{::title}, ~{::link}, ~{::main})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link th:replace="~{/fragments/config.html :: CommonConfig}">
     <link href="/css/main.css" rel="stylesheet">
-    <title>Document</title>
+    <title>CT Spring Mall</title>
 </head>
 <body>
-    <!-- navigation bar -->
-    <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
-
     <!-- main body -->
-    <div class="card-container">
+    <main class="card-container">
         <div class="card">
-
             <table>
                 <thead>
                 <tr>
@@ -42,12 +33,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
-    <!-- Pagination Controls -->
-    <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
-
-    <!-- include external JavaScript file -->
-    <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
+    </main>
 </body>
 </html>
