@@ -47,9 +47,9 @@ spring:
 server:
   servlet:
     session:
-      timeout: 5m
+      timeout: 30m
       cookie:
-        max-age: 5m
+        max-age: 30m
   port: 8080
 
 logging:
