@@ -4,6 +4,7 @@ import com.personal.shop.entity.Notice;
 import com.personal.shop.service.AwsS3Service;
 import com.personal.shop.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -37,12 +38,14 @@ public class NoticeController {
     }
 
     @GetMapping("/noticeInfo/write")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     String showNoticeWriteForm() {
 
         return "detail/notice/noticeWrite";
     }
 
     @PostMapping("/noticeInfo/write")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     String addItem(@RequestParam("title") String title,
                    @RequestParam("contents") String contents,
                    @RequestParam("author") String author) {

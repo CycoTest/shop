@@ -36,9 +36,9 @@ public class MyUserDetailsService implements UserDetailsService {
         Member user = result.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (user.getDisplayName().equalsIgnoreCase("admin")) {
-            authorities.add(new SimpleGrantedAuthority("관리자"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
-            authorities.add(new SimpleGrantedAuthority("일반유저"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
         // displayName 데이터를 추가하기 위해, userdetails의 User 클래스를 상속받은 CustomUser 클래스를 만들어줌

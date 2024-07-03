@@ -5,7 +5,7 @@ spring:
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html
-    mode: HTML5
+    mode: HTML
     cache: false
     check-template-location: true
     enabled: true
@@ -26,7 +26,7 @@ spring:
     # 테이블 생성 자동 여부
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
 
   # DB에 세션 데이터 저장
   session:
@@ -44,14 +44,21 @@ spring:
       s3:
         bucket: cycotestspringmall
 
-
-
-
-
-
 server:
   servlet:
     session:
-      timeout: 5m
+      timeout: 30m
       cookie:
-        max-age: 5m
+        max-age: 30m
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.personal.shop: DEBUG
+    com.personal.shop.controller: TRACE
+    com.personal.shop.service: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    com.amazons: DEBUG
+    software.amazon.awssdk: DEBUG

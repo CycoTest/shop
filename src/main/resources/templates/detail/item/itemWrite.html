@@ -18,7 +18,7 @@
     <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
 
     <div sec:authorize="isAuthenticated()">
-        <form action="/itemInfo/write" method="post">
+        <form id="itemWriteForm" action="/itemInfo/write" method="post">
         <label for="title">제목: </label>
         <input type="text" id="title" name="title" required>
         <br>
@@ -36,16 +36,20 @@
         <input type="hidden" id="imageURL" name="imageURL">
         <br>
 
+        <!-- Image upload form -->
+        <div>
+            <img id="uploadImage" src="" style="display: none;" alt="UploadImage">
+            <input type="file" id="fileInput">
+            <button type="button" id="cancelFileBtn" style="display: none;">선택 취소</button>
+            <p id="selectedFileName"></p>
+        </div>
+
         <button type="submit">전송</button>
         </form>
 
-        <!-- Image upload form -->
-        <div>
-            <img id="uploadImage" src="" alt="UploadImage">
-            <input type="file" id="fileInput">
-        </div>
 
         <script src="/js/itemImageS3.js" defer></script>
+        <script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
     </div>
 </body>
 </html>

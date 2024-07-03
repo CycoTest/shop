@@ -30,6 +30,19 @@
     color: darkblue; /* 선택된 글자색 */
 }
 
+.nav .logoutBtn {
+    background: cadetblue;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    border-radius: 4px;
+}
+
+.nav .logoutBtn:hover,
+.nav .logoutBtn:hover {
+    opacity: 0.8;
+}
+
 .nav .loginStatus {
     display: flex;
     align-items: center;
@@ -38,16 +51,6 @@
 
 .nav .loginStatus span {
     margin-right: 10px;
-}
-
-.nav .logoutBtn {
-    background: black;
-    color: white;
-    border: none;
-    padding: 8px 13px;
-    margin-left: 10px;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 input, button {

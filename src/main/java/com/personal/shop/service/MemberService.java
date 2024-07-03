@@ -29,7 +29,7 @@ public class MemberService {
         member.setPassword(pwHash);
 
         System.out.println(member);
-        log.debug("Saving member: {}", member);
+        log.info("Saving member: {}", member);
 
         memberRepository.save(member);
     }
