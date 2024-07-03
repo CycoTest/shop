@@ -19,7 +19,7 @@
     <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
 
     <div class="mypage-container">
-        <!-- Side bar (only show on myPage, not on myPageCheck) -->
+        <!-- Sidebar (only show on myPage, not on myPageCheck) -->
         <th:block th:if="${showSideBar}">
             <div th:replace="~{/fragments/sideBar.html :: MyPageSideBar}"></div>
         </th:block>
@@ -39,7 +39,6 @@
         <p th:text="${auth}"></p>
     </div>
 
-    <!--    <script src="/js/myPageCheck.js" defer></script>-->
     <script th:replace="~{/fragments/commonJS.html :: CommonJS}"></script>
     <th:block th:replace="${scripts}"></th:block>
 </body>

@@ -59,17 +59,11 @@ h4 {
 
 .mypage-sidebar {
     width: 200px;
-    background-color: #f8f9fa;
-    padding: 20px;
-    height: calc(100vh - 60px);
-    position: fixed;
-    left: 0;
+    margin-right: 20px;
 }
 
 .mypage-content {
-    margin-left: 220px;
-    padding: 20px;
-    flex-grow: 1;
+    flex: 1;
 }
 
 .mypage-sidebar ul {
