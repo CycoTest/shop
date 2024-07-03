@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+        th:replace="~{/fragments/layouts/myPageL.html :: myPageLayout(~{::title}, ~{::link}, ~{::main}, ~{})}">
+<head>
+    <link href="/css/myPage.css" rel="stylesheet">
+    <title>My Page Login</title>
+</head>
+<body>
+<main>
+    <div class="reLogin-form">
+        <img src="https://ctspringmall.s3.ap-northeast-2.amazonaws.com/CT+SpringMall-logo.png" alt="Logo">
+        <form th:action="@{/myPage/verify}" method="post">
+            <label for="username">아이디:</label>
+            <input type="text" id="username" name="username" th:value="${#authentication.principal.username}" readonly>
+
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">로그인</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

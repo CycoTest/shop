@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,5 +34,16 @@ public class MemberService {
         log.info("Saving member: {}", member);
 
         memberRepository.save(member);
+    }
+
+    public boolean verifyUser(String username, String password) {
+        Optional<Member> memberOptional = memberRepository.findByUserName(username);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+
+            return passwordEncoder.matches(password, member.getPassword());
+        }
+
+        return false;
     }
 }

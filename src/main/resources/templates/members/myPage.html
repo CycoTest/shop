@@ -2,37 +2,18 @@
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      th:replace="~{/fragments/layouts/myPageL.html :: myPageLayout(~{::title}, ~{::link}, ~{::main}, ~{})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link th:replace="~{/fragments/config.html :: CommonConfig}">
-    <link href="/css/main.css" rel="stylesheet">
-    <title>Document</title>
+    <link href="/css/myPage.css" rel="stylesheet">
+    <title>My Page</title>
 </head>
 <body>
-    <!-- navigation bar -->
-    <div th:replace="~{/fragments/nav.html :: NavBar}"></div>
-
-    <h4>마이 페이지</h4>
-
-    <div sec:authentication="principal">principal</div>
-    <div sec:authorize="isAuthenticated()">
-        <span>특정 권한이 있으면 보여주쇼</span>
-        <span>로그인 된 사람이 있으면 보여주쇼</span>
-        <p>Welcome, <span sec:authentication="name"></span>!</p>
+<main>
+    <div th:if="${user != null }">
+        <p>아이디: <span th:text="${user.username}"></span></p>
+        <p>닉네임: <span th:text="${user.displayName}"></span></p>
     </div>
-    <div sec:authorize="!isAuthenticated()">
-        <p>Please <a th:href="@{/member}">log in</a>.</p>
-    </div>
-
-    <!-- Debugging Section -->
-    <div>
-        <h3>Debugging Info</h3>
-        <p th:text="${auth}"></p>
-    </div>
+</main>
 </body>
 </html>
