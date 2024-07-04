@@ -56,9 +56,7 @@ logging:
   level:
     root: INFO
     com.personal.shop: DEBUG
-    com.personal.shop.controller: TRACE
-    com.personal.shop.service: DEBUG
-    org.springframework.web: INFO
+    org.springframework.security: DEBUG
     org.hibernate: INFO
     com.amazons: DEBUG
     software.amazon.awssdk: DEBUG
