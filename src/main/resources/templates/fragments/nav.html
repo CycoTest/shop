@@ -1,19 +1,25 @@
 <div class="nav" th:fragment="NavBar">
-    <a class="logo">Spring Mall</a>
+    <div class="logo-container">
+        <img src="https://ctspringmall.s3.ap-northeast-2.amazonaws.com/CT+SpringMall-logo.png" alt="Logo">
+    </div>
     <div class="nav-links" id="nav-links">
         <a href="/notice" id="notice-link">Notice</a>
         <a href="/list" id="list-link">List</a>
         <a href="#" id="write-link">Write</a>
     </div>
     <div class="loginStatus">
-        <span sec:authorize="isAuthenticated()">
-            Welcome, <span th:text="${#authentication.principal.displayName}">회원님</span>!
-        </span>
-        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">로그인</a>
-        <div sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="logoutBtn">로그아웃</button>
-            </form>
+        <div class="user-menu" sec:authorize="isAuthenticated()">
+            <a href="#" class="user-name" th:text="${#authentication.principal.displayName}"></a>
+            <div class="dropdown-menu">
+                <div class="user-info">
+                    <div class="user-name" th:text="${#authentication.principal.displayName}"></div>
+                </div>
+                <a th:href="@{/myPage/check}">마이 페이지</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logoutBtn">로그아웃</button>
+                </form>
+            </div>
         </div>
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()">로그인</a>
     </div>
 </div>
