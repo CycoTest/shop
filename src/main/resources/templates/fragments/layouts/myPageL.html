@@ -34,7 +34,7 @@
     </div>
 
     <!-- Debugging Section -->
-    <div>
+    <div th:if="${#authentication.principal != null and #authentication.principal.displayName == 'admin'}">
         <h3>Debugging Info</h3>
         <p th:text="${auth}"></p>
     </div>
