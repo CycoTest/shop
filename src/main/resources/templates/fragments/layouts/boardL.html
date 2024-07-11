@@ -10,7 +10,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <link th:replace="~{/fragments/config.html :: CommonConfig}">
+  <link th:replace="~{/fragments/commonHead.html :: CommonConfig}">
   <!-- 고유 CSS -->
   <th:block th:replace="${links}"/>
   <title th:replace="${title}">Default Title</title>
@@ -37,8 +37,8 @@
 <div th:replace="~{fragments/pagination.html :: Pagination(currentPage=${pageData.currentPage}, totalPages=${pageData.totalPages}, startPage=${pageData.startPage}, endPage=${pageData.endPage}, size=${pageData.size}) }"></div>
 
 <!-- include external JavaScript file -->
-<script src="/js/errorModal.js" defer></script>
-<script src="/js/itemRemove.js" defer></script>
-<script th:replace="~{fragments/commonJavaScript.html :: CommonJS}"></script>
+<script src="/js/fragment/errorModal.js" defer></script>
+<script src="/js/base/itemRemove.js" defer></script>
+<script th:replace="~{fragments/commonJS.html :: CommonJS}"></script>
 </body>
 </html>

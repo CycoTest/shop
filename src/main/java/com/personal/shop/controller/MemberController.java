@@ -55,7 +55,7 @@ public class MemberController {
 
         model.addAttribute("user", user);
         model.addAttribute("pageTitle", "마이 페이지");
-        model.addAttribute("showMyPageSideBar", true);
+        model.addAttribute("showSideBar", true);
 
         // 로그인 확인 상태 초기화
         session.removeAttribute("isVerified");

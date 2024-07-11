@@ -2,6 +2,9 @@ spring:
   application:
     name: shop
 
+  config:
+    import: optional:file:shop.env[.properties]
+
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html
@@ -12,23 +15,19 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://shoppingmall.mysql.database.azure.com/shop
-    username: username of mysql
-    password: password of mysql
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
-    # JPA 문법쓸 때, SQL 따로 출력 여부
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-
-    # 테이블 생성 자동 여부
     hibernate:
       ddl-auto: update
     open-in-view: false
 
-  # DB에 세션 데이터 저장
   session:
     jdbc:
       initialize-schema: always
@@ -36,13 +35,12 @@ spring:
   cloud:
     aws:
       credentials:
-        access-key: bucket access key
-        secret-key: bucket secret key
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
       region:
         static: ap-northeast-2
-      # custom aws property
       s3:
-        bucket: cycotestspringmall
+        bucket: ctspringmall
 
 server:
   servlet:
@@ -56,9 +54,7 @@ logging:
   level:
     root: INFO
     com.personal.shop: DEBUG
-    com.personal.shop.controller: TRACE
-    com.personal.shop.service: DEBUG
-    org.springframework.web: INFO
+    org.springframework.security: DEBUG
     org.hibernate: INFO
     com.amazons: DEBUG
     software.amazon.awssdk: DEBUG

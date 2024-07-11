@@ -1,10 +1,11 @@
+/* board */
 .card-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 300px;
-    padding-right: 300px;
     margin: 50px auto 0 auto;
+    width: calc(100% - 600px);
+    max-width: 1200px;
 }
 
 .card {
@@ -51,75 +52,7 @@
     margin-right: 10px;
 }
 
-/* modal for error message */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity 0.1s ease;
-}
-
-.modal.show {
-    opacity: 1;
-}
-
-.modal-content {
-    background-color: #f8d7da;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    opacity: 0;
-    transition: all 0.1s ease;
-    overflow: hidden; /* 내부 요소가 모달 밖으로 나가지 않도록 설정 */
-}
-
-.modal.show .modal-content {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-}
-
-.close {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    color: #721c24;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s ease;
-    z-index: 1001;
-}
-
-.close:hover,
-.close:focus {
-    color: #333;
-}
-
-#errorMessage {
-    color: #721c24;
-    background-color: #f8d7da;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    word-wrap: break-word; /* 문자열이 길 경우, 줄바꿈 */
-    padding: 20px;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-}
-
-/* detail page */
+/* detail view page */
 .detail {
     text-align: center;
 }

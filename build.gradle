@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.personal'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2'
 
 java {
 	sourceCompatibility = '17'
@@ -41,6 +41,9 @@ dependencies {
 
 	// aws - autoconfigure & s3
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+	// env
+	implementation 'io.github.cdimascio:dotenv-java:3.0.1'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

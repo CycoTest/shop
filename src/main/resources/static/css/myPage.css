@@ -53,17 +53,22 @@ h4 {
 
 /* Side Bar */
 .mypage-container {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
     display: flex;
-    margin-top: 20px;
 }
 
 .mypage-sidebar {
     width: 200px;
+    background-color: #f8f9fa;
+    padding: 20px;
     margin-right: 20px;
 }
 
 .mypage-content {
     flex: 1;
+    padding: 20px;
 }
 
 .mypage-sidebar ul {
