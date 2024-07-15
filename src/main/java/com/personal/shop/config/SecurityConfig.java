@@ -41,6 +41,11 @@ public class SecurityConfig implements WebMvcConfigurer {
                     .csrfTokenRepository(csrfTokenRepository())
                     .ignoringRequestMatchers("/login", "/register"))
 
+                // Enable CORS with specific configurations
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource()))
+
+                // Authentication
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/login", "/register").permitAll()
                     .requestMatchers("/myPage/**", "/itemInfo/**", "/noticeInfo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -62,11 +67,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                     // 401, 403
                     .authenticationEntryPoint(customAuthEntryPoint)
                     // 404
-                    .accessDeniedHandler(customAccessDeniedHandler()))
-
-                // Enable CORS with specific configurations
-                .cors(cors -> cors
-                    .configurationSource(corsConfigurationSource()));
+                    .accessDeniedHandler(customAccessDeniedHandler()));
 
         return httpSecurity.build();
     }

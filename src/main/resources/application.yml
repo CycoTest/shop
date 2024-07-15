@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: shop
 
@@ -12,6 +14,7 @@ spring:
     cache: false
     check-template-location: true
     enabled: true
+    encoding: UTF-8
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -48,7 +51,7 @@ server:
       timeout: 30m
       cookie:
         max-age: 30m
-  port: 8080
+  port: 5000
 
 logging:
   level:
