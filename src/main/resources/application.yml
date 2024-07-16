@@ -1,11 +1,12 @@
 spring:
   profiles:
     active: dev
+
   application:
     name: shop
 
   config:
-    import: optional:file:shop.env[.properties]
+    import: optional:file:.env.dev[.properties]
 
   thymeleaf:
     prefix: classpath:templates/
@@ -51,7 +52,19 @@ server:
       timeout: 30m
       cookie:
         max-age: 30m
-  port: 5000
+  port: ${PORT:5000}
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: health, info
+  endpoints:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+
 
 logging:
   level:
