@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.personal'
-version = '0.0.2'
+version = '0.0.2-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
@@ -36,6 +36,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 
+	// spring boot actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 	// DB에 세션 데이터 저장
 	implementation 'org.springframework.session:spring-session-jdbc'
 
@@ -57,4 +60,10 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+processResources {
+	from('.') {
+		include 'shop.env.enc'
+	}
 }

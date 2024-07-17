@@ -1,9 +1,9 @@
 spring:
-  application:
-    name: shop
+  profiles:
+    active: dev
 
   config:
-    import: optional:file:shop.env[.properties]
+    import: optional:file:.env.dev[.properties]
 
   thymeleaf:
     prefix: classpath:templates/
@@ -12,6 +12,7 @@ spring:
     cache: false
     check-template-location: true
     enabled: true
+    encoding: UTF-8
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -48,7 +49,29 @@ server:
       timeout: 30m
       cookie:
         max-age: 30m
-  port: 8080
+  port: 5000
+
+
+
+management:
+  endpoints:
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+        include: info, health
+    web:
+      base-path: /actuator/appHealth
+      exposure:
+        include: "*"
+  info:
+    os:
+      enabled: true
+    java:
+      enabled: true
+    env:
+      enabled: true
+
 
 logging:
   level:
