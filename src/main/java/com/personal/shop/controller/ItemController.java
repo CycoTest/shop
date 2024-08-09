@@ -67,7 +67,7 @@ public class ItemController {
         Optional<Item> result = itemService.bringItemById(id);
         if (result.isPresent()) {
             model.addAttribute("itemDetail", result.get());
-//            System.out.println(result.get());
+            System.out.println(result.get());
 
             return "detail/item/itemDetail";
         } else {
