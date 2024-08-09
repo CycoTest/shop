@@ -30,7 +30,6 @@ public class MemberService {
         String pwHash = passwordEncoder.encode(password);
         member.setPassword(pwHash);
 
-        System.out.println(member);
         log.info("Saving member: {}", member);
 
         memberRepository.save(member);
