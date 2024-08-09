@@ -21,7 +21,7 @@ public class ImageUploadController {
     @GetMapping("/presigned-url")
     String getURL(@RequestParam String filename,
                   @RequestParam String type) {
-        log.info("type : " + type);
+        log.info("type : {}", type);
 
         String path;
         if ("item".equalsIgnoreCase(type)) {
@@ -35,7 +35,7 @@ public class ImageUploadController {
         }
 
         String result = awsS3Service.createPreSignedUrl(path);
-        log.info("ImageUploadController result : " + result);
+        log.info("ImageUploadController result : {}", result);
 
         return result;
     }

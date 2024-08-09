@@ -1,6 +1,5 @@
 package com.personal.shop.service;
 
-import com.personal.shop.entity.Item;
 import com.personal.shop.entity.Notice;
 import com.personal.shop.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,5 @@
 package com.personal.shop.service;
 
-import com.personal.shop.repository.ItemRepository;
-import com.personal.shop.repository.NoticeRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +11,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class PaginationService {
-
-    private final ItemRepository itemRepository;
-    private final NoticeRepository noticeRepository;
 
     public Pageable createPageable(int page, int size) {
 

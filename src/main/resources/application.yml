@@ -6,7 +6,7 @@ spring:
     import: optional:file:.env.dev[.properties]
 
   thymeleaf:
-    prefix: classpath:templates/
+    prefix: classpath:/templates/
     suffix: .html
     mode: HTML
     cache: false
