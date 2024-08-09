@@ -18,15 +18,18 @@ public class CommentController {
     @PostMapping("/comment")
     String attachComment(@RequestParam String content,
                          @RequestParam Long parent,
+                         @RequestParam Double rating,
                          Authentication auth) {
         CustomUser user = (CustomUser) auth.getPrincipal();
 
         Comment data = new Comment();
         data.setContent(content);
         data.setParentId(parent);
-        data.setUsername(user.getUsername());
+        data.setDisplayName(user.getDisplayName());
+        data.setRating(rating);
         commentRepository.save(data);
 
-        return "detail/item/itemDetail";
+        // 댓글을 단 상세 페이지로 리다이렉트
+        return "redirect:/detail/" + parent;
     }
 }

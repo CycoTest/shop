@@ -1,0 +1,82 @@
+/* Comment & Star-Rating */
+.comment-container {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 1.5em;
+    justify-content: space-around;
+    text-align: center;
+    width: 5em;
+}
+
+.star-rating .star {
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star-rating .star.active {
+    color: #ffd700;
+}
+
+.star-rating .star.active.full {
+    color: #ffd700;
+}
+
+.star-rating .star.active:not(.full)::after {
+    content: '\2605';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #ffd700;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star-rating :checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #fc0;
+}
+
+#commentContainer {
+    margin-top: 20px;
+}
+
+#commentContent {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#cancelBtn, button[type="submit"] {
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+
+.rating-value {
+    margin-left: 10px;
+    font-weight: bold;
+}
