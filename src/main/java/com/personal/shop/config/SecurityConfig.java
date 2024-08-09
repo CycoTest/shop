@@ -1,6 +1,7 @@
 package com.personal.shop.config;
 
 import com.personal.shop.component.CustomAuthEntryPoint;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
                 // Authentication
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/login", "/register", "/actuator/**").permitAll()
+                    .requestMatchers("/login", "/register", "/actuator/**", "/detail/**").permitAll()
                     .requestMatchers("/myPage/**", "/itemInfo/**", "/noticeInfo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                     .requestMatchers("/**").permitAll())
 
