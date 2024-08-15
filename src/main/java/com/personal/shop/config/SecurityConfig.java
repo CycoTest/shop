@@ -1,6 +1,9 @@
 package com.personal.shop.config;
 
 import com.personal.shop.component.CustomAuthEntryPoint;
+import com.personal.shop.config.module.SecurityPath;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.*;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,7 +24,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -32,45 +41,83 @@ public class SecurityConfig implements WebMvcConfigurer {
     // FilterChain
     // 모든 유저의 요청과 서버의 응답 사이에 자동으로 실행해주고 싶은 코드를 담는 곳
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        httpSecurity
-                .addFilterBefore(characterEncodingFilter(), org.springframework.web.filter.CorsFilter.class)
+        http
+            .addFilterBefore(characterEncodingFilter(), CorsFilter.class)
+            .csrf(this::configureCsrf) // CSRF 기능 켜기
+            .cors(this::configureCors) // Enable CORS with specific configurations
+            .authorizeHttpRequests(this::configureAuthorizeHttpRequests) // Authentication
+            .formLogin(this::configureFormLogin)
+            .logout(this::configureLogout)
+            .exceptionHandling(this::configureExceptionHandling);
 
-                // CSRF 기능 켜기
-                .csrf(csrf -> csrf
-                    .csrfTokenRepository(csrfTokenRepository())
-                    .ignoringRequestMatchers("/login", "/register"))
+        return http.build();
+    }
 
-                // Enable CORS with specific configurations
-                .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()))
+    private void configureCsrf(CsrfConfigurer<HttpSecurity> csrf) throws RuntimeException {
+        csrf
+            .csrfTokenRepository(csrfTokenRepository())
+            .ignoringRequestMatchers(SecurityPath.LOGIN.getPath(), SecurityPath.REGISTER.getPath());
+    }
 
-                // Authentication
-                .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/login", "/register", "/actuator/**", "/detail/**").permitAll()
-                    .requestMatchers("/myPage/**", "/itemInfo/**", "/noticeInfo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                    .requestMatchers("/**").permitAll())
+    private void configureCors(CorsConfigurer<HttpSecurity> cors) {
+        cors
+            .configurationSource(corsConfigurationSource());
+    }
 
-                .formLogin(formLogin -> formLogin
-                    .loginPage("/login") // The URL to the login page
-                    .defaultSuccessUrl("/list", true)
-                    .failureUrl("/login?error=true")
-                    .permitAll())
+    private void configureAuthorizeHttpRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize)
+            throws RuntimeException {
+        authorize
+            .requestMatchers(
+                    SecurityPath.LOGIN.getPath(),
+                    SecurityPath.REGISTER.getPath(),
+                    SecurityPath.ACTUATOR.getPath(),
+                    SecurityPath.DETAIL.getPath()
+            ).permitAll()
 
-                .logout(logout -> logout
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/list") // redirect to Item List page
-                    .permitAll())
+            .requestMatchers(
+                    SecurityPath.API_CHECK_AUTH.getPath()
+            ).authenticated()
 
-                // 인증되지 않은 사용자의 요청에 의한 설정
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                    // 401, 403
-                    .authenticationEntryPoint(customAuthEntryPoint)
-                    // 404
-                    .accessDeniedHandler(customAccessDeniedHandler()));
+            .requestMatchers(
+                    SecurityPath.MY_PAGE.getPath(),
+                    SecurityPath.ITEM_INFO.getPath(),
+                    SecurityPath.NOTICE_INFO.getPath(),
+                    SecurityPath.API.getPath()
+            ).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
-        return httpSecurity.build();
+            .anyRequest().permitAll();
+    }
+
+    private void configureFormLogin(FormLoginConfigurer<HttpSecurity> formLogin) throws RuntimeException {
+        formLogin
+            .loginPage(SecurityPath.LOGIN.getPath()) // The URL to the login page
+            .defaultSuccessUrl(SecurityPath.LIST.getPath(), true)
+            .failureUrl(SecurityPath.LOGIN.getPath() + "?error=true")
+            .permitAll();
+    }
+
+    private void configureLogout(LogoutConfigurer<HttpSecurity> logout) throws RuntimeException {
+        logout
+            .logoutUrl(SecurityPath.LOGOUT.getPath())
+            .logoutSuccessUrl(SecurityPath.LIST.getPath()) // redirect to Item List page
+            .permitAll();
+    }
+
+    private void configureExceptionHandling(ExceptionHandlingConfigurer<HttpSecurity> exception) {
+        exception
+            .authenticationEntryPoint(((request, response, authException) -> {
+               if (request.getRequestURI().equals(SecurityPath.API_CHECK_AUTH.getPath())) {
+                   response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+               } else {
+                   customAuthEntryPoint.commence(request, response, authException);
+               }
+            }))
+            // 401, 403
+            .authenticationEntryPoint(customAuthEntryPoint)
+            // 404
+            .accessDeniedHandler(customAccessDeniedHandler());
     }
 
     @Bean
